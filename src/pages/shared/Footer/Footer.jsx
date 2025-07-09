@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa';
+import { FaFacebook, FaInstagram, FaGithub } from 'react-icons/fa';
 import HeartBridge from '../heartbridgelogo/HeartBridge';
 
 const Footer = () => {
@@ -9,15 +9,36 @@ const Footer = () => {
                 {/* Logo & About */}
                 <div>
                     <div className="flex items-center gap-2 mb-4">
-                       <HeartBridge></HeartBridge>
+                        <HeartBridge />
                     </div>
                     <p className="text-sm">
                         HeartBridge is your trusted platform for finding your perfect life partner. Join us to build a bond that lasts forever.
                     </p>
-                    <div className="flex gap-4 mt-4 text-red-600">
-                        <FaFacebook className="hover:text-white cursor-pointer" />
-                        <FaTwitter className="hover:text-white cursor-pointer" />
-                        <FaInstagram className="hover:text-white cursor-pointer" />
+                    <div className="flex gap-4 mt-4 text-red-600 text-lg">
+                        <a
+                            href="https://www.facebook.com/miskatujjaman.raihan"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-white"
+                        >
+                            <FaFacebook />
+                        </a>
+                        <a
+                            href="https://www.instagram.com/miskatujjaman"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-white"
+                        >
+                            <FaInstagram />
+                        </a>
+                        <a
+                            href="https://github.com/miskaran2002"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-white"
+                        >
+                            <FaGithub />
+                        </a>
                     </div>
                 </div>
 
