@@ -4,6 +4,9 @@ import Home from "../pages/Home/Home/Home";
 import AuthLayout from "../layouts/AuthLayout";
 import Login from "../pages/Authentication/Login/Login";
 import Register from "../pages/Authentication/Register/Register";
+import PrivateRoute from "../Routes/PrivateRoute";
+import DashBoardLayout from "../layouts/DashBoardLayout";
+import EditBioData from "../pages/Dashboard/BiodataForm/editBiodata";
 
 
 export const router = createBrowserRouter([
@@ -32,6 +35,18 @@ export const router = createBrowserRouter([
             }
           
         ]
+    },
+    {
+        path:'/dashboard',
+        element:<PrivateRoute><DashBoardLayout></DashBoardLayout></PrivateRoute>,
+        children:[
+            {
+                path:'bioData',
+                Component:EditBioData,
+            }
+
+        ]
+
     }
    
     

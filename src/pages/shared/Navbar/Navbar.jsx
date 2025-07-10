@@ -10,9 +10,11 @@ import {
     FaTachometerAlt,
 } from 'react-icons/fa';
 import HeartBridge from '../heartbridgelogo/HeartBridge';
+import useAuth from '../../../hooks/useAuth';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const {user}=useAuth();
 
     const navItems = [
         { name: 'Home', path: '/', icon: <FaHome /> },
