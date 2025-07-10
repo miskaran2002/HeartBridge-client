@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
 import useAuth from '../../../hooks/useAuth';
+import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import Swal from 'sweetalert2';
 
 const divisions = ['Dhaka', 'Chattagra', 'Rangpur', 'Barisal', 'Khulna', 'Mymensingh', 'Sylhet'];
 const heights = ['Below 5ft', '5ft - 5.5ft', '5.5ft - 6ft', 'Above 6ft'];
@@ -12,6 +14,7 @@ const races = ['Fair', 'Wheatish', 'Dark'];
 const EditBioData = () => {
     const { user } = useAuth();
     const { register, handleSubmit, setValue } = useForm();
+    const axiosSecure= useAxiosSecure();
 
     useEffect(() => {
         if (user) {
@@ -23,6 +26,21 @@ const EditBioData = () => {
     const onSubmit = (data) => {
         console.log('📦 Submitted Biodata:', data);
         // TODO: send data to backend with axios/fetch
+        axiosSecure.post('/biodatas',data)
+        .then(response => {
+            console.log('📨 Response:', response.data);
+            if (response.data.
+                insertedId) {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Your biodata has been saved",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                }
+        })
+        
     };
 
     return (

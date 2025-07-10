@@ -7,6 +7,7 @@ import Register from "../pages/Authentication/Register/Register";
 import PrivateRoute from "../Routes/PrivateRoute";
 import DashBoardLayout from "../layouts/DashBoardLayout";
 import EditBioData from "../pages/Dashboard/BiodataForm/editBiodata";
+import AboutUs from "../pages/AboutUs/AboutUs";
 
 
 export const router = createBrowserRouter([
@@ -17,6 +18,10 @@ export const router = createBrowserRouter([
             {
                 index:true,
                 Component:Home,
+            },
+            {
+                path:'/about',
+                Component:AboutUs,
             }
         ]
     },
