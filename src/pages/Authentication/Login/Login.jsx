@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import { FcGoogle } from 'react-icons/fc';
 import { useForm } from 'react-hook-form';
+import SocialLogin from '../SocialLogin/SocialLogin';
 
 const Login = () => {
     const { register, handleSubmit } = useForm();
@@ -10,9 +11,7 @@ const Login = () => {
         console.log(data); // handle login
     };
 
-    const handleGoogleLogin = () => {
-        // Handle Google login here
-    };
+    
 
     return (
         <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md mx-auto">
@@ -62,13 +61,7 @@ const Login = () => {
                 </p>
                  <p className='mt-4 text-sm text-gray-600'>or</p>
                 {/* Google Login Button */}
-                <button
-                    onClick={handleGoogleLogin}
-                    className="mt-4 flex items-center justify-center gap-2 w-full border py-2 rounded-md hover:bg-gray-50 transition"
-                >
-                    <FcGoogle size={22} />
-                    <span className="text-sm font-medium text-gray-700">Login with Google</span>
-                </button>
+               <SocialLogin></SocialLogin>
             </div>
         </div>
     );
