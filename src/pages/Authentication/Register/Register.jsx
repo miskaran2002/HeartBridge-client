@@ -3,12 +3,23 @@ import { Link } from 'react-router';
 import { FcGoogle } from 'react-icons/fc';
 import { useForm } from 'react-hook-form';
 import SocialLogin from '../SocialLogin/SocialLogin';
+import useAuth from '../../../hooks/useAuth';
 
 const Register = () => {
     const { register, handleSubmit } = useForm();
+    const { createUser } =useAuth();
 
     const onSubmit = data => {
         console.log(data); // handle registration logic
+        createUser(data.email, data.password)
+        .then(result => {
+            console.log(result.user);
+        })
+        .catch(error => {
+            console.log(error);
+        })
+        
+       
     };
 
   
