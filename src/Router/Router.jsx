@@ -9,6 +9,7 @@ import DashBoardLayout from "../layouts/DashBoardLayout";
 import EditBioData from "../pages/Dashboard/BiodataForm/editBiodata";
 import AboutUs from "../pages/AboutUs/AboutUs";
 import BioDatas from "../pages/Biodatas/BioDatas";
+import ViewBioData from "../pages/Dashboard/ViewBioData/ViewBioData";
 
 
 export const router = createBrowserRouter([
@@ -56,6 +57,7 @@ export const router = createBrowserRouter([
             },
             {
                 path:'viewBiodata',
+                Component:ViewBioData,
 
             },
 
