@@ -28,6 +28,57 @@ const DashboardLayout = () => {
                     >
                         <FaUser /> My Biodata
                     </NavLink>
+
+
+
+              
+
+                <NavLink
+                    to="/dashboard/viewBiodata"
+                    className={({ isActive }) =>
+                        `flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700 ${isActive ? 'bg-gray-700' : ''}`
+                    }
+                >
+                    <FaUser /> View Biodata
+                </NavLink>
+
+                <NavLink
+                    to="/dashboard/myContactRequests"
+                    className={({ isActive }) =>
+                        `flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700 ${isActive ? 'bg-gray-700' : ''}`
+                    }
+                >
+                    <FaUser /> My Contact Request
+                </NavLink>
+
+                <NavLink
+                    to="/dashboard/myFavourites"
+                    className={({ isActive }) =>
+                        `flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700 ${isActive ? 'bg-gray-700' : ''}`
+                    }
+                >
+                    <FaUser /> My Favourites Biodata
+                </NavLink>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             
 
              
@@ -70,6 +121,41 @@ const DashboardLayout = () => {
                 <NavLink to="/dashboard/bioData" className={({ isActive }) => `flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700 ${isActive ? 'bg-gray-700' : ''}`}>
                         <FaUser /> My Biodata
                     </NavLink>
+
+
+                  <NavLink
+                    to="/dashboard/viewBiodata"
+                    className={({ isActive }) =>
+                        `flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700 ${isActive ? 'bg-gray-700' : ''}`
+                    }
+                >
+                    <FaUser /> View Biodata
+                </NavLink>
+
+                <NavLink
+                    to="/dashboard/myContactRequests"
+                    className={({ isActive }) =>
+                        `flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700 ${isActive ? 'bg-gray-700' : ''}`
+                    }
+                >
+                    <FaUser /> My Contact Request
+                </NavLink>
+
+                <NavLink
+                    to="/dashboard/myFavourites"
+                    className={({ isActive }) =>
+                        `flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700 ${isActive ? 'bg-gray-700' : ''}`
+                    }
+                >
+                    <FaUser /> My Favourites Biodata
+                </NavLink>
+                
+
+
+
+
+
+
                 
                
                     <NavLink to="/dashboard/premiumBenefits" className={({ isActive }) => `flex items-center gap-2 px-3 py-2 rounded hover:bg-yellow-600 ${isActive ? 'bg-yellow-600' : ''}`}>
