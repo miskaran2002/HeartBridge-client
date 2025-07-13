@@ -1,33 +1,34 @@
 import React from 'react';
-import { useParams } from 'react-router';
+import { useParams, useNavigate } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
-
-
 import Swal from 'sweetalert2';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import useAuth from '../../hooks/useAuth';
 
 const BiodataDetails = () => {
     const { biodataId } = useParams();
+    const navigate = useNavigate();
     const axiosSecure = useAxiosSecure();
     const { user } = useAuth();
-   
 
+    // Main biodata query
     const { data: biodata, isLoading } = useQuery({
         queryKey: ['biodata', biodataId],
         queryFn: async () => {
             const res = await axiosSecure.get(`/biodata/by-id/${biodataId}`);
+            console.log('🚀 Fetched biodata:', res.data);
             return res.data?.data;
-        }
+        },
     });
 
+    // Similar biodatas query
     const { data: similarBiodatas = [] } = useQuery({
         queryKey: ['similar', biodata?.biodataType],
         enabled: !!biodata?.biodataType,
         queryFn: async () => {
             const res = await axiosSecure.get(`/biodatas?type=${biodata.biodataType}`);
             return res.data?.data?.filter(b => b.biodataId !== biodata.biodataId).slice(0, 3);
-        }
+        },
     });
 
     const handleAddToFav = async () => {
@@ -54,13 +55,21 @@ const BiodataDetails = () => {
     };
 
     if (isLoading) return <p className="text-center py-10">Loading biodata...</p>;
+    if (!biodata) return <p className="text-center py-10 text-red-600">No biodata found!</p>;
 
     const isPremium = user?.isPremium || false;
 
     return (
         <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
-            <h2 className="text-2xl font-bold text-center">{biodata.name} (ID: {biodata.biodataId})</h2>
-            <img src={biodata.image} alt={biodata.name} className="w-40 h-40 object-cover rounded-full mx-auto border-2 border-[#4E1A3D]" />
+            <h2 className="text-2xl font-bold text-center">
+                {biodata.name || 'Unknown Name'} (ID: {biodata.biodataId || 'N/A'})
+            </h2>
+
+            <img
+                src={biodata.image || 'https://i.ibb.co/2n7Vj1J/default-avatar.png'}
+                alt={biodata.name}
+                className="w-40 h-40 object-cover rounded-full mx-auto border-2 border-[#4E1A3D]"
+            />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
                 <p><strong>Biodata Type:</strong> {biodata.biodataType}</p>
@@ -84,7 +93,9 @@ const BiodataDetails = () => {
                         <p><strong>Mobile Number:</strong> {biodata.mobile}</p>
                     </>
                 ) : (
-                    <p className="md:col-span-2 text-red-600 font-medium">Contact info is hidden. Become a premium member to view it.</p>
+                    <p className="md:col-span-2 text-red-600 font-medium">
+                        Contact info is hidden. Become a premium member to view it.
+                    </p>
                 )}
             </div>
 
