@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { motion } from 'framer-motion';
+import { Dialog } from '@headlessui/react';
 import useAuth from '../../../hooks/useAuth';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import Swal from 'sweetalert2';
@@ -13,188 +13,139 @@ const races = ['Fair', 'Wheatish', 'Dark'];
 
 const EditBioData = () => {
     const { user } = useAuth();
-    const { register, handleSubmit, setValue } = useForm();
-    const axiosSecure= useAxiosSecure();
+    const { register, handleSubmit, setValue, reset } = useForm();
+    const axiosSecure = useAxiosSecure();
+    const [existingData, setExistingData] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
-        if (user) {
-            setValue('name', user.displayName || '');
-            setValue('email', user.email || '');
-        }
-    }, [user, setValue]);
-
-    const onSubmit = (data) => {
-        console.log('📦 Submitted Biodata:', data);
-        // TODO: send data to backend with axios/fetch
-        axiosSecure.post('/biodatas',data)
-        .then(response => {
-            console.log('📨 Response:', response.data);
-            if (response.data.
-                insertedId) {
-                Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: "Your biodata has been saved",
-                    showConfirmButton: false,
-                    timer: 1500
+        if (user?.email) {
+            axiosSecure.get(`/biodata/${user.email}`)
+                .then(res => {
+                    if (res.data?.success) {
+                        const bio = res.data.data;
+                        setExistingData(bio);
+                        reset(bio); // populate with existing biodata
+                        setIsModalOpen(true);
+                    } else {
+                        // No biodata found, prepare for create
+                        const defaultValues = {
+                            name: user.displayName || '',
+                            email: user.email || ''
+                        };
+                        setExistingData(null);
+                        reset(defaultValues); // show biodataType & name
+                        setIsModalOpen(true);
+                    }
+                })
+                .catch(err => {
+                    console.error('❌ Error loading biodata:', err);
+                    const fallbackValues = {
+                        name: user.displayName || '',
+                        email: user.email || ''
+                    };
+                    setExistingData(null);
+                    reset(fallbackValues); // fallback case
+                    setIsModalOpen(true);
                 });
-                }
-        })
-        
+        }
+    }, [user, axiosSecure, reset]);
+
+
+    const onSubmit = async (data) => {
+        try {
+            if (existingData) {
+                delete data._id; // Ensure _id is not sent during update
+            }
+            const response = await axiosSecure.post('/biodatas', data);
+            if (response.data?.insertedId || response.data?.modifiedCount > 0) {
+                Swal.fire('✅ Success!', response.data.message, 'success');
+                setIsModalOpen(false);
+            }
+        } catch (error) {
+            console.error('❌ Submit Error:', error);
+            Swal.fire('Error', 'Something went wrong.', 'error');
+        }
     };
 
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="bg-white p-6 rounded-lg shadow-lg max-w-4xl mx-auto my-10"
-        >
-            <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-                Create / Edit Your Biodata
-            </h2>
+        <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)} className="relative z-50">
+            <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+            <div className="fixed inset-0 flex items-center justify-center p-4 overflow-y-auto">
+                <Dialog.Panel className="bg-white p-6 rounded max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                    <Dialog.Title className="text-2xl font-bold text-center mb-6">
+                        {existingData ? 'Update Your Biodata' : 'Create Your Biodata'}
+                    </Dialog.Title>
 
-            <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Biodata Type */}
-                <div>
-                    <label className="block mb-1">Biodata Type</label>
-                    <select {...register('biodataType', { required: true })} className="w-full border p-2 rounded">
-                        <option value="">Select</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                    </select>
-                </div>
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                        {[{
+                            label: 'Biodata Type', name: 'biodataType', type: 'select', options: ['Male', 'Female']
+                        }, {
+                            label: 'Full Name', name: 'name', type: 'input'
+                        }, {
+                            label: 'Profile Image URL', name: 'image', type: 'input'
+                        }, {
+                            label: 'Date of Birth', name: 'dob', type: 'date'
+                        }, {
+                            label: 'Height', name: 'height', type: 'select', options: heights
+                        }, {
+                            label: 'Weight', name: 'weight', type: 'select', options: weights
+                        }, {
+                            label: 'Age', name: 'age', type: 'number'
+                        }, {
+                            label: 'Occupation', name: 'occupation', type: 'select', options: occupations
+                        }, {
+                            label: 'Race (Skin Color)', name: 'race', type: 'select', options: races
+                        }, {
+                            label: "Father's Name", name: 'fatherName', type: 'input'
+                        }, {
+                            label: "Mother's Name", name: 'motherName', type: 'input'
+                        }, {
+                            label: 'Permanent Division', name: 'permanentDivision', type: 'select', options: divisions
+                        }, {
+                            label: 'Present Division', name: 'presentDivision', type: 'select', options: divisions
+                        }, {
+                            label: 'Expected Partner Age', name: 'expectedAge', type: 'number', required: false
+                        }, {
+                            label: 'Expected Partner Height', name: 'expectedHeight', type: 'select', options: heights, required: false
+                        }, {
+                            label: 'Expected Partner Weight', name: 'expectedWeight', type: 'select', options: weights, required: false
+                        }, {
+                            label: 'Email', name: 'email', type: 'email', readOnly: true
+                        }, {
+                            label: 'Mobile Number', name: 'mobile', type: 'input'
+                        }].map(({ label, name, type, options, readOnly = false, required = true }) => (
+                            <div key={name}>
+                                <label className="block mb-1">{label}</label>
+                                {type === 'select' ? (
+                                    <select {...register(name, { required })} className="w-full border p-2 rounded">
+                                        <option value="">Select</option>
+                                        {options.map(option => <option key={option} value={option}>{option}</option>)}
+                                    </select>
+                                ) : (
+                                    <input
+                                        type={type === 'input' ? 'text' : type}
+                                        {...register(name, { required })}
+                                        className="w-full border p-2 rounded"
+                                        readOnly={readOnly}
+                                    />
+                                )}
+                            </div>
+                        ))}
 
-                {/* Name */}
-                <div>
-                    <label className="block mb-1">Full Name</label>
-                    <input {...register('name', { required: true })} className="w-full border p-2 rounded" />
-                </div>
-
-                {/* Image */}
-                <div>
-                    <label className="block mb-1">Profile Image URL</label>
-                    <input {...register('image')} className="w-full border p-2 rounded" placeholder="Image URL (optional)" />
-                </div>
-
-                {/* DOB */}
-                <div>
-                    <label className="block mb-1">Date of Birth</label>
-                    <input type="date" {...register('dob', { required: true })} className="w-full border p-2 rounded" />
-                </div>
-
-                {/* Height & Weight */}
-                <div>
-                    <label className="block mb-1">Height</label>
-                    <select {...register('height', { required: true })} className="w-full border p-2 rounded">
-                        <option value="">Select</option>
-                        {heights.map(h => <option key={h}>{h}</option>)}
-                    </select>
-                </div>
-
-                <div>
-                    <label className="block mb-1">Weight</label>
-                    <select {...register('weight', { required: true })} className="w-full border p-2 rounded">
-                        <option value="">Select</option>
-                        {weights.map(w => <option key={w}>{w}</option>)}
-                    </select>
-                </div>
-
-                {/* Age */}
-                <div>
-                    <label className="block mb-1">Age</label>
-                    <input type="number" {...register('age', { required: true })} className="w-full border p-2 rounded" />
-                </div>
-
-                {/* Occupation & Race */}
-                <div>
-                    <label className="block mb-1">Occupation</label>
-                    <select {...register('occupation', { required: true })} className="w-full border p-2 rounded">
-                        <option value="">Select</option>
-                        {occupations.map(o => <option key={o}>{o}</option>)}
-                    </select>
-                </div>
-
-                <div>
-                    <label className="block mb-1">Race (Skin Color)</label>
-                    <select {...register('race', { required: true })} className="w-full border p-2 rounded">
-                        <option value="">Select</option>
-                        {races.map(r => <option key={r}>{r}</option>)}
-                    </select>
-                </div>
-
-                {/* Parents */}
-                <div>
-                    <label className="block mb-1">Father's Name</label>
-                    <input {...register('fatherName', { required: true })} className="w-full border p-2 rounded" />
-                </div>
-
-                <div>
-                    <label className="block mb-1">Mother's Name</label>
-                    <input {...register('motherName', { required: true })} className="w-full border p-2 rounded" />
-                </div>
-
-                {/* Divisions */}
-                <div>
-                    <label className="block mb-1">Permanent Division</label>
-                    <select {...register('permanentDivision', { required: true })} className="w-full border p-2 rounded">
-                        <option value="">Select</option>
-                        {divisions.map(d => <option key={d}>{d}</option>)}
-                    </select>
-                </div>
-
-                <div>
-                    <label className="block mb-1">Present Division</label>
-                    <select {...register('presentDivision', { required: true })} className="w-full border p-2 rounded">
-                        <option value="">Select</option>
-                        {divisions.map(d => <option key={d}>{d}</option>)}
-                    </select>
-                </div>
-
-                {/* Expected Partner Info */}
-                <div>
-                    <label className="block mb-1">Expected Partner Age</label>
-                    <input type="number" {...register('expectedAge')} className="w-full border p-2 rounded" />
-                </div>
-
-                <div>
-                    <label className="block mb-1">Expected Partner Height</label>
-                    <select {...register('expectedHeight')} className="w-full border p-2 rounded">
-                        <option value="">Select</option>
-                        {heights.map(h => <option key={h}>{h}</option>)}
-                    </select>
-                </div>
-
-                <div>
-                    <label className="block mb-1">Expected Partner Weight</label>
-                    <select {...register('expectedWeight')} className="w-full border p-2 rounded">
-                        <option value="">Select</option>
-                        {weights.map(w => <option key={w}>{w}</option>)}
-                    </select>
-                </div>
-
-                {/* Email & Mobile */}
-                <div>
-                    <label className="block mb-1">Email</label>
-                    <input type="email" {...register('email', { required: true })} className="w-full border p-2 rounded" readOnly />
-                </div>
-
-                <div>
-                    <label className="block mb-1">Mobile Number</label>
-                    <input type="text" {...register('mobile', { required: true })} className="w-full border p-2 rounded" />
-                </div>
-
-                <div className="md:col-span-2">
-                    <button
-                        type="submit"
-                        style={{ backgroundColor: '#0B1120' }}
-                        className="w-full text-white py-2 rounded-md hover:bg-opacity-90 transition"
-                    >
-                        Save and Publish now
-                    </button>
-                </div>
-            </form>
-        </motion.div>
+                        <div>
+                            <button
+                                type="submit"
+                                style={{ backgroundColor: '#0B1120' }}
+                                className="w-full text-white py-2 rounded-md hover:bg-opacity-90 transition"
+                            >
+                                {existingData ? 'Update and Publish now' : 'Create and Publish now'}
+                            </button>
+                        </div>
+                    </form>
+                </Dialog.Panel>
+            </div>
+        </Dialog>
     );
 };
 
