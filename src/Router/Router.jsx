@@ -28,6 +28,10 @@ export const router = createBrowserRouter([
             {
                 path:'/biodatas',
                 Component:BioDatas,
+            },
+            {
+                path:'/biodata/:biodataId',
+                Component:ViewBioData,
             }
         ]
     },
