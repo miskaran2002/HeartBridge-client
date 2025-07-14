@@ -1,33 +1,62 @@
-// CheckoutForm.jsx
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import useAxiosSecure from '../../hooks/useAxiosSecure'; // your custom axios hook
+import Swal from 'sweetalert2';
 
 const CheckoutForm = ({ biodataId, email }) => {
     const stripe = useStripe();
     const elements = useElements();
     const { register, handleSubmit } = useForm();
+    const axiosSecure = useAxiosSecure();
+
     const [cardError, setCardError] = useState('');
+    const [clientSecret, setClientSecret] = useState('');
+
+    // 1. Fetch client secret from backend
+    useEffect(() => {
+        if (email) {
+            axiosSecure.post('/create-payment-intent', { email })
+                .then(res => {
+                    setClientSecret(res.data.clientSecret);
+                })
+                .catch(err => {
+                    console.error('Client secret error:', err);
+                });
+        }
+    }, [email, axiosSecure]);
 
     const onSubmit = async (data) => {
-        if (!stripe || !elements) return;
+        if (!stripe || !elements || !clientSecret) return;
 
         const card = elements.getElement(CardElement);
         if (!card) return;
 
+        // Create payment method
         const { error, paymentMethod } = await stripe.createPaymentMethod({
             type: 'card',
             card,
         });
 
         if (error) {
-            console.error('[Stripe error]', error);
             setCardError(error.message);
-        } else {
-            console.log('[PaymentMethod]', paymentMethod);
+            return;
+        }
+
+        // Confirm card payment
+        const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(clientSecret, {
+            payment_method: paymentMethod.id,
+            receipt_email: email, // optional
+        });
+
+        if (confirmError) {
+            console.error('Payment confirmation error:', confirmError.message);
+            setCardError(confirmError.message);
+        } else if (paymentIntent.status === 'succeeded') {
             setCardError('');
-            console.log('Form data:', data); // biodataId + email
-            // Later: Send to backend
+            console.log('Payment successful:', paymentIntent);
+            Swal.fire('✅ Success', 'Payment completed and contact request submitted!', 'success');
+            // 🔁 Later: You can now save this request info to your DB (with status: 'pending')
         }
     };
 
@@ -82,10 +111,10 @@ const CheckoutForm = ({ biodataId, email }) => {
 
             <button
                 type="submit"
-                disabled={!stripe}
+                disabled={!stripe || !clientSecret}
                 className="w-full px-4 py-2 bg-[#4E1A3D] text-white rounded hover:bg-[#38102e]"
             >
-                Pay & Submit Request
+                Pay & Submit Request for $5 USD
             </button>
         </form>
     );

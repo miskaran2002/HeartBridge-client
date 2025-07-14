@@ -6,7 +6,7 @@ import CheckoutForm from './CheckoutForm';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
-const stripePromise = loadStripe('pk_test_51M5zYzBb8q6z0XZJ9v8Z9ZS009Q1J9ZJZ');
+const stripePromise = loadStripe(import.meta.env. VITE_payment_key);
 
 const Checkout = () => {
     const { biodataId } = useParams();
