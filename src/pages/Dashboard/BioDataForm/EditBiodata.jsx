@@ -31,7 +31,8 @@ const EditBioData = () => {
                         // No biodata found, prepare for create
                         const defaultValues = {
                             name: user.displayName || '',
-                            email: user.email || ''
+                            email: user.email || '',
+                            image: user.photoURL || '' 
                         };
                         setExistingData(null);
                         reset(defaultValues); // show biodataType & name
@@ -42,7 +43,8 @@ const EditBioData = () => {
                     console.error('❌ Error loading biodata:', err);
                     const fallbackValues = {
                         name: user.displayName || '',
-                        email: user.email || ''
+                        email: user.email || '',
+                        image: user.photoURL || '' 
                     };
                     setExistingData(null);
                     reset(fallbackValues); // fallback case
