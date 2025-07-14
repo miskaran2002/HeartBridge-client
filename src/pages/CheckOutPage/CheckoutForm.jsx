@@ -1,48 +1,93 @@
-// components/CheckoutForm.jsx
+// CheckoutForm.jsx
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
-import React from 'react';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
-const CheckoutForm = () => {
-
+const CheckoutForm = ({ biodataId, email }) => {
     const stripe = useStripe();
     const elements = useElements();
+    const { register, handleSubmit } = useForm();
+    const [cardError, setCardError] = useState('');
 
-
-    const handleSubmit = async (event) => {
-        
-        event.preventDefault();
-        if (!stripe || !elements) {
-            return;
-        }
+    const onSubmit = async (data) => {
+        if (!stripe || !elements) return;
 
         const card = elements.getElement(CardElement);
-        if (!card) {
-            return;
-        }
+        if (!card) return;
 
-        const {error,paymentMethod}=await stripe.createPaymentMethod({
+        const { error, paymentMethod } = await stripe.createPaymentMethod({
             type: 'card',
             card,
-        })
+        });
+
         if (error) {
-            console.log('[error]', error);
-        }
-        else {
+            console.error('[Stripe error]', error);
+            setCardError(error.message);
+        } else {
             console.log('[PaymentMethod]', paymentMethod);
+            setCardError('');
+            console.log('Form data:', data); // biodataId + email
+            // Later: Send to backend
         }
+    };
 
-    }
     return (
-        <div className="w-full border p-4 rounded bg-gray-50 text-center text-gray-500">
-           <form onSubmit={handleSubmit}>
-            <CardElement>
-                <button type='submit'disabled={!stripe}>
-                    pay for need information
-                </button>
-            </CardElement>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            {/* Biodata ID (readonly) */}
+            <div>
+                <label className="block mb-1 font-medium">Biodata ID</label>
+                <input
+                    type="text"
+                    readOnly
+                    defaultValue={biodataId}
+                    {...register('biodataId')}
+                    className="w-full border p-2 rounded bg-gray-100"
+                />
+            </div>
 
-           </form>
-        </div>
+            {/* User Email (readonly) */}
+            <div>
+                <label className="block mb-1 font-medium">Your Email</label>
+                <input
+                    type="email"
+                    readOnly
+                    defaultValue={email}
+                    {...register('email')}
+                    className="w-full border p-2 rounded bg-gray-100"
+                />
+            </div>
+
+            {/* Stripe Card Input */}
+            <div>
+                <label className="block mb-1 font-medium">Card Details</label>
+                <CardElement
+                    options={{
+                        style: {
+                            base: {
+                                fontSize: '16px',
+                                color: '#32325d',
+                                '::placeholder': { color: '#aab7c4' },
+                            },
+                            invalid: {
+                                color: '#fa755a',
+                                iconColor: '#fa755a',
+                            },
+                        },
+                    }}
+                    className="border p-3 rounded bg-white"
+                />
+            </div>
+
+            {cardError && <p className="text-red-600">{cardError}</p>}
+
+            <button
+                type="submit"
+                disabled={!stripe}
+                className="w-full px-4 py-2 bg-[#4E1A3D] text-white rounded hover:bg-[#38102e]"
+            >
+                Pay & Submit Request
+            </button>
+        </form>
     );
 };
 
