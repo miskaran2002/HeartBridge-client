@@ -1,64 +1,68 @@
-import React from 'react';
-import { Link } from 'react-router';
-import { FcGoogle } from 'react-icons/fc';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
-import SocialLogin from '../SocialLogin/SocialLogin';
-import useAuth from '../../../hooks/useAuth';
+import Swal from 'sweetalert2';
 import axios from 'axios';
-import { useState } from 'react';
+import useAuth from '../../../hooks/useAuth';
+import SocialLogin from '../SocialLogin/SocialLogin';
 
 const Register = () => {
     const { register, handleSubmit } = useForm();
-    const { createUser, updateUserProfile } =useAuth();
+    const { createUser, updateUserProfile } = useAuth();
     const [profilePic, setProfilePic] = useState('');
+    const navigate = useNavigate();
 
-    const onSubmit = data => {
-        console.log(data); // handle registration logic
-        createUser(data.email, data.password)
-        .then(result => {
-            console.log(result.user);
-            // update user profile in firebase
-            const userProfile ={
+    const onSubmit = async (data) => {
+        try {
+            const result = await createUser(data.email, data.password);
+
+            const userProfile = {
                 displayName: data.name,
                 photoURL: profilePic
-            }
-            updateUserProfile(userProfile)
-            .then(() => {
-                console.log('user profile updated');
-            })
-            .catch(error => {
-                console.log(error);
-            })
-           
-          
-        })
-        .catch(error => {
-            console.log(error);
-        })
-        
-       
+            };
+
+            await updateUserProfile(userProfile);
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Registration Successful!',
+                text: 'Welcome to HeartBridge Matrimony.',
+                timer: 2000,
+                showConfirmButton: false
+            });
+
+            navigate('/');
+        } catch (error) {
+            console.error(error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops!',
+                text: 'Registration failed. Please try again.',
+            });
+        }
     };
-    const handleImageUpload = async(e) => {
+
+    const handleImageUpload = async (e) => {
         const image = e.target.files[0];
-        console.log(image);
         const formData = new FormData();
         formData.append('image', image);
+
         const imgUploadUrl = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_upload_key}`;
 
-        const res = await axios.post(imgUploadUrl, formData)
-        setProfilePic(res.data.data.url);
-        
-    }
-
-  
+        try {
+            const res = await axios.post(imgUploadUrl, formData);
+            setProfilePic(res.data.data.url);
+        } catch (error) {
+            console.error('Image upload failed:', error);
+        }
+    };
 
     return (
         <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md mx-auto">
             <h2 className="text-2xl font-bold text-center text-primary mb-6">Create Your Account</h2>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-
-                {/* Name Field */}
+                {/* Name */}
                 <div>
                     <label className="block mb-1 text-sm font-medium text-gray-700">Full Name</label>
                     <input
@@ -69,7 +73,7 @@ const Register = () => {
                     />
                 </div>
 
-                {/* Email Field */}
+                {/* Email */}
                 <div>
                     <label className="block mb-1 text-sm font-medium text-gray-700">Email</label>
                     <input
@@ -80,7 +84,7 @@ const Register = () => {
                     />
                 </div>
 
-                {/* Password Field */}
+                {/* Password */}
                 <div>
                     <label className="block mb-1 text-sm font-medium text-gray-700">Password</label>
                     <input
@@ -91,32 +95,17 @@ const Register = () => {
                     />
                 </div>
 
-                {/* Photo URL */}
-                {/* <div>
-                    <label className="block mb-1 text-sm font-medium text-gray-700">Photo URL</label>
+                {/* Profile Image Upload */}
+                <div>
+                    <label className="block mb-1 text-sm font-medium text-gray-700">Upload Profile Picture</label>
                     <input
-                        {...register("photo", { required: true })}
-                        type="url"
-                        placeholder="https://yourphoto.com/image.jpg"
+                        type="file"
+                        onChange={handleImageUpload}
                         className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                     />
-                </div> */}
-
-
-                {/* profile picture*/}
-                <div>
-                    <label className="block mb-1 text-sm font-medium text-gray-700">Image</label>
-                    <input type="file"
-                        onChange={handleImageUpload}
-                        className="input w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                        placeholder='Upload your profile picture'
-                    />
-
                 </div>
-               
-                
 
-                {/* Submit Button */}
+                {/* Submit */}
                 <button
                     type="submit"
                     style={{ backgroundColor: '#0B1120' }}
@@ -126,7 +115,7 @@ const Register = () => {
                 </button>
             </form>
 
-            {/* Footer Section */}
+            {/* Footer */}
             <div className="mt-6 text-center">
                 <p className="text-sm text-gray-600">
                     Already have an account?{' '}
@@ -136,7 +125,7 @@ const Register = () => {
                 </p>
                 <p className="mt-1 text-sm text-gray-600">or</p>
 
-                <SocialLogin></SocialLogin>
+                <SocialLogin />
             </div>
         </div>
     );
