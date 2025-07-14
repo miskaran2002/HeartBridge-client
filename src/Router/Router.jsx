@@ -12,6 +12,7 @@ import BioDatas from "../pages/Biodatas/BioDatas";
 import ViewBioData from "../pages/Dashboard/ViewBioData/ViewBioData";
 import BiodataDetails from "../pages/BiodataDetails/BiodataDetails";
 import Checkout from "../pages/CheckOutPage/Checkout";
+import MyContactRequest from "../pages/Dashboard/MyContactRequest/MyContactRequest";
 
 
 export const router = createBrowserRouter([
@@ -72,6 +73,7 @@ export const router = createBrowserRouter([
             },
             {
                 path:'myContactRequests',
+                Component:MyContactRequest,
 
                
             }

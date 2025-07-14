@@ -1,7 +1,7 @@
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import useAxiosSecure from '../../hooks/useAxiosSecure'; // your custom axios hook
+import useAxiosSecure from '../../hooks/useAxiosSecure';
 import Swal from 'sweetalert2';
 
 const CheckoutForm = ({ biodataId, email }) => {
@@ -13,7 +13,7 @@ const CheckoutForm = ({ biodataId, email }) => {
     const [cardError, setCardError] = useState('');
     const [clientSecret, setClientSecret] = useState('');
 
-    // 1. Fetch client secret from backend
+    // 1. Get client secret from backend
     useEffect(() => {
         if (email) {
             axiosSecure.post('/create-payment-intent', { email })
@@ -32,7 +32,7 @@ const CheckoutForm = ({ biodataId, email }) => {
         const card = elements.getElement(CardElement);
         if (!card) return;
 
-        // Create payment method
+        // 2. Create payment method
         const { error, paymentMethod } = await stripe.createPaymentMethod({
             type: 'card',
             card,
@@ -43,20 +43,39 @@ const CheckoutForm = ({ biodataId, email }) => {
             return;
         }
 
-        // Confirm card payment
+        // 3. Confirm payment
         const { paymentIntent, error: confirmError } = await stripe.confirmCardPayment(clientSecret, {
             payment_method: paymentMethod.id,
-            receipt_email: email, // optional
+            receipt_email: email,
         });
 
         if (confirmError) {
-            console.error('Payment confirmation error:', confirmError.message);
             setCardError(confirmError.message);
         } else if (paymentIntent.status === 'succeeded') {
             setCardError('');
-            console.log('Payment successful:', paymentIntent);
-            Swal.fire('✅ Success', 'Payment completed and contact request submitted!', 'success');
-            // 🔁 Later: You can now save this request info to your DB (with status: 'pending')
+            console.log('✅ Payment successful:', paymentIntent);
+
+            // 4. Save contact request to database
+            try {
+                const contactRequest = {
+                    name: data.name,              // Optional — set if available
+                    email: data.email,
+                    biodataId: data.biodataId,
+                    mobile: '',            // Leave blank, will be filled after approval
+                    contactEmail: '',      // Leave blank, will be filled after approval
+                };
+
+                const res = await axiosSecure.post('/contact-requests', contactRequest);
+
+                if (res.data.insertedId) {
+                    Swal.fire('✅ Success', 'Payment done and contact request submitted!', 'success');
+                } else {
+                    Swal.fire('⚠️ Warning', 'Payment successful, but request failed to save.', 'warning');
+                }
+            } catch (err) {
+                console.error('❌ Error saving contact request:', err);
+                Swal.fire('❌ Error', 'Payment done, but failed to save contact request.', 'error');
+            }
         }
     };
 
@@ -74,7 +93,7 @@ const CheckoutForm = ({ biodataId, email }) => {
                 />
             </div>
 
-            {/* User Email (readonly) */}
+            {/* Email (readonly) */}
             <div>
                 <label className="block mb-1 font-medium">Your Email</label>
                 <input
@@ -107,6 +126,7 @@ const CheckoutForm = ({ biodataId, email }) => {
                 />
             </div>
 
+            {/* Error Message */}
             {cardError && <p className="text-red-600">{cardError}</p>}
 
             <button
