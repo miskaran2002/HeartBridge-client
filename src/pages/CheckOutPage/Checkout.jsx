@@ -4,6 +4,10 @@ import { useParams } from 'react-router';
 import { useForm } from 'react-hook-form';
 import useAuth from '../../hooks/useAuth';
 import CheckoutForm from './CheckoutForm';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise =loadStripe('pk_test_51M5zYzBb8q6z0XZJ9v8Z9ZS009Q1J9ZJZ')
 
 const Checkout = () => {
     const { biodataId } = useParams(); // get biodataId from URL
@@ -47,7 +51,11 @@ const Checkout = () => {
                 {/* Stripe Card Input */}
                 <div>
                     <label className="block mb-1 font-medium">Card Details</label>
-                    <CheckoutForm />
+                    <Elements stripe={stripePromise}>
+                        <CheckoutForm />
+
+                    </Elements>
+                    
                 </div>
 
 
