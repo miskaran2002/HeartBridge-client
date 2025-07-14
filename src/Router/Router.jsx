@@ -11,6 +11,7 @@ import AboutUs from "../pages/AboutUs/AboutUs";
 import BioDatas from "../pages/Biodatas/BioDatas";
 import ViewBioData from "../pages/Dashboard/ViewBioData/ViewBioData";
 import BiodataDetails from "../pages/BiodataDetails/BiodataDetails";
+import Checkout from "../pages/CheckOutPage/Checkout";
 
 
 export const router = createBrowserRouter([
@@ -33,6 +34,10 @@ export const router = createBrowserRouter([
             {
                 path:'/biodata/:biodataId',
                 element:<PrivateRoute><BiodataDetails/></PrivateRoute>,
+            },
+            {
+                path: 'checkout/:biodataId',
+                element:<PrivateRoute><Checkout></Checkout></PrivateRoute>,
             }
         ]
     },
@@ -65,6 +70,11 @@ export const router = createBrowserRouter([
                 Component:ViewBioData,
 
             },
+            {
+                path:'myContactRequests',
+
+               
+            }
 
         ]
 
