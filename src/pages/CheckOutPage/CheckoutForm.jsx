@@ -58,7 +58,7 @@ const CheckoutForm = ({ biodataId, email }) => {
             // 4. Save contact request to database
             try {
                 const contactRequest = {
-                    name: data.name,              // Optional — set if available
+                    name: " ",              // Optional — set if available
                     email: data.email,
                     biodataId: data.biodataId,
                     mobile: '',            // Leave blank, will be filled after approval

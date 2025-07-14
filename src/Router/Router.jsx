@@ -13,6 +13,7 @@ import ViewBioData from "../pages/Dashboard/ViewBioData/ViewBioData";
 import BiodataDetails from "../pages/BiodataDetails/BiodataDetails";
 import Checkout from "../pages/CheckOutPage/Checkout";
 import MyContactRequest from "../pages/Dashboard/MyContactRequest/MyContactRequest";
+import ContactUs from "../pages/contactus/ContactUs";
 
 
 export const router = createBrowserRouter([
@@ -31,6 +32,10 @@ export const router = createBrowserRouter([
             {
                 path:'/biodatas',
                 Component:BioDatas,
+            },
+            {
+                path:'/contact',
+                Component:ContactUs
             },
             {
                 path:'/biodata/:biodataId',
