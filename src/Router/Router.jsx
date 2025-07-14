@@ -32,7 +32,8 @@ export const router = createBrowserRouter([
             },
             {
                 path:'/biodata/:biodataId',
-                Component:BiodataDetails,
+                // Component:BiodataDetails,
+                element:<PrivateRoute><BiodataDetails/></PrivateRoute>,
             }
         ]
     },

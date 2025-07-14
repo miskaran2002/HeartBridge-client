@@ -1,12 +1,13 @@
-import { NavLink } from 'react-router';
+import { NavLink, useNavigate } from 'react-router';
 import { useState } from 'react';
-
+import Swal from 'sweetalert2';
 import {
     FaHome,
     FaUserFriends,
     FaInfoCircle,
     FaPhoneAlt,
     FaSignInAlt,
+    FaSignOutAlt,
     FaTachometerAlt,
 } from 'react-icons/fa';
 import HeartBridge from '../heartbridgelogo/HeartBridge';
@@ -14,39 +15,65 @@ import useAuth from '../../../hooks/useAuth';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const {user}=useAuth();
+    const navigate = useNavigate();
+    const { user, logout } = useAuth();
+
+    const handleLogout = () => {
+        logout()
+            .then(() => {
+                Swal.fire('Logged out!', 'You have successfully logged out.', 'success');
+                navigate('/');
+            })
+            .catch(err => {
+                console.error('Logout error:', err);
+                Swal.fire('Error', 'Failed to logout.', 'error');
+            });
+    };
 
     const navItems = [
         { name: 'Home', path: '/', icon: <FaHome /> },
         { name: 'Biodatas', path: '/biodatas', icon: <FaUserFriends /> },
         { name: 'About Us', path: '/about', icon: <FaInfoCircle /> },
         { name: 'Contact Us', path: '/contact', icon: <FaPhoneAlt /> },
-        { name: 'Dashboard', path: '/dashboard', icon: <FaTachometerAlt /> },
-        { name: 'Login', path: '/login', icon: <FaSignInAlt /> },
     ];
+
+    if (user) {
+        navItems.push({ name: 'Dashboard', path: '/dashboard', icon: <FaTachometerAlt /> });
+    } else {
+        navItems.push({ name: 'Login', path: '/login', icon: <FaSignInAlt /> });
+    }
 
     return (
         <nav className="bg-white shadow-md sticky top-0 z-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between py-1 md:py-2 items-center">
-                    {/* Left: Logo */}
+                    {/* Logo */}
                     <HeartBridge />
 
                     {/* Desktop Nav */}
-                    <div className="hidden md:flex space-x-6">
-                        {navItems.map((item) => (
+                    <div className="hidden md:flex space-x-6 items-center">
+                        {navItems.map(item => (
                             <NavLink
                                 key={item.name}
                                 to={item.path}
                                 className={({ isActive }) =>
-                                    `flex items-center gap-1 text-gray-700 font-medium transition duration-200 hover:text-red-600 ${isActive ? 'text-red-600 border-b-2 border-red-600 pb-1' : ''
-                                    }`
+                                    `flex items-center gap-1 text-gray-700 font-medium transition duration-200 hover:text-red-600 ${isActive ? 'text-red-600 border-b-2 border-red-600 pb-1' : ''}`
                                 }
                             >
                                 {item.icon}
                                 {item.name}
                             </NavLink>
                         ))}
+                        {/* Logout button only for logged-in users */}
+                        {user && (
+                            <button
+                                onClick={handleLogout}
+                                className="flex items-center gap-1 text-gray-700 hover:text-red-600 transition"
+                            >
+                                <FaSignOutAlt />
+                                Logout
+                            </button>
+                        )}
                     </div>
 
                     {/* Mobile Menu Button */}
@@ -67,16 +94,15 @@ const Navbar = () => {
                 </div>
             </div>
 
-            {/* Mobile Nav Links */}
+            {/* Mobile Nav */}
             {isOpen && (
                 <div className="md:hidden px-4 pb-4 space-y-2 bg-white">
-                    {navItems.map((item) => (
+                    {navItems.map(item => (
                         <NavLink
                             key={item.name}
                             to={item.path}
                             className={({ isActive }) =>
-                                `flex items-center gap-2 text-gray-700 hover:text-red-600 transition ${isActive ? 'text-red-600 font-semibold' : ''
-                                }`
+                                `flex items-center gap-2 text-gray-700 hover:text-red-600 transition ${isActive ? 'text-red-600 font-semibold' : ''}`
                             }
                             onClick={() => setIsOpen(false)}
                         >
@@ -84,6 +110,18 @@ const Navbar = () => {
                             {item.name}
                         </NavLink>
                     ))}
+                    {user && (
+                        <button
+                            onClick={() => {
+                                handleLogout();
+                                setIsOpen(false);
+                            }}
+                            className="flex items-center gap-2 text-gray-700 hover:text-red-600 transition"
+                        >
+                            <FaSignOutAlt />
+                            Logout
+                        </button>
+                    )}
                 </div>
             )}
         </nav>
