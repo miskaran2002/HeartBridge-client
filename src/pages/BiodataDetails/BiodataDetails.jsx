@@ -26,8 +26,10 @@ const BiodataDetails = () => {
         queryKey: ['similar', biodata?.biodataType],
         enabled: !!biodata?.biodataType,
         queryFn: async () => {
-            const res = await axiosSecure.get(`/biodatas?type=${biodata.biodataType}`);
-            return res.data?.data?.filter(b => b.biodataId !== biodata.biodataId).slice(0, 3);
+            const res = await axiosSecure.get(`/biodatas`);
+            return res.data?.data
+                ?.filter(b => b.biodataId !== biodata.biodataId && b.biodataType === biodata.biodataType)
+                .slice(0, 3);
         },
     });
 
@@ -124,11 +126,12 @@ const BiodataDetails = () => {
                     {similarBiodatas.map((b) => (
                         <div key={b._id} className="border rounded-lg p-4 text-center shadow">
                             <img
-                                src={b.image}
+                                src={b.image || 'https://i.ibb.co/2n7Vj1J/default-avatar.png'}
                                 alt={b.name}
                                 className="w-20 h-20 mx-auto rounded-full object-cover"
                             />
                             <h4 className="font-bold mt-2">{b.name}</h4>
+                            <p>Type: {b.biodataType}</p>
                             <p>ID: {b.biodataId}</p>
                             <p>Age: {b.age}</p>
                             <p>Division: {b.permanentDivision}</p>
