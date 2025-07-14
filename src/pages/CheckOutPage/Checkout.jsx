@@ -3,6 +3,7 @@ import { useParams } from 'react-router';
 
 import { useForm } from 'react-hook-form';
 import useAuth from '../../hooks/useAuth';
+import CheckoutForm from './CheckoutForm';
 
 const Checkout = () => {
     const { biodataId } = useParams(); // get biodataId from URL
@@ -43,18 +44,18 @@ const Checkout = () => {
                 </div>
 
                 {/* Stripe Card Input (placeholder for now) */}
+                {/* Stripe Card Input */}
                 <div>
                     <label className="block mb-1 font-medium">Card Details</label>
-                    <div className="w-full border p-4 rounded bg-gray-50 text-center text-gray-500">
-                        Stripe Card Input (Coming Soon)
-                    </div>
+                    <CheckoutForm />
                 </div>
+
 
                 {/* Submit Button */}
                 <div>
                     <button
                         type="submit"
-                        className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+                        className="w-full px-4 py-2 bg-[#4E1A3D] text-white rounded hover:bg-[#38102e]"
                     >
                         Pay & Submit Request
                     </button>
