@@ -4,16 +4,33 @@ import { FcGoogle } from 'react-icons/fc';
 import { useForm } from 'react-hook-form';
 import SocialLogin from '../SocialLogin/SocialLogin';
 import useAuth from '../../../hooks/useAuth';
+import axios from 'axios';
+import { useState } from 'react';
 
 const Register = () => {
     const { register, handleSubmit } = useForm();
-    const { createUser } =useAuth();
+    const { createUser, updateUserProfile } =useAuth();
+    const [profilePic, setProfilePic] = useState('');
 
     const onSubmit = data => {
         console.log(data); // handle registration logic
         createUser(data.email, data.password)
         .then(result => {
             console.log(result.user);
+            // update user profile in firebase
+            const userProfile ={
+                displayName: data.name,
+                photoURL: profilePic
+            }
+            updateUserProfile(userProfile)
+            .then(() => {
+                console.log('user profile updated');
+            })
+            .catch(error => {
+                console.log(error);
+            })
+           
+          
         })
         .catch(error => {
             console.log(error);
@@ -21,6 +38,17 @@ const Register = () => {
         
        
     };
+    const handleImageUpload = async(e) => {
+        const image = e.target.files[0];
+        console.log(image);
+        const formData = new FormData();
+        formData.append('image', image);
+        const imgUploadUrl = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_upload_key}`;
+
+        const res = await axios.post(imgUploadUrl, formData)
+        setProfilePic(res.data.data.url);
+        
+    }
 
   
 
@@ -64,7 +92,7 @@ const Register = () => {
                 </div>
 
                 {/* Photo URL */}
-                <div>
+                {/* <div>
                     <label className="block mb-1 text-sm font-medium text-gray-700">Photo URL</label>
                     <input
                         {...register("photo", { required: true })}
@@ -72,7 +100,21 @@ const Register = () => {
                         placeholder="https://yourphoto.com/image.jpg"
                         className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                     />
+                </div> */}
+
+
+                {/* profile picture*/}
+                <div>
+                    <label className="block mb-1 text-sm font-medium text-gray-700">Image</label>
+                    <input type="file"
+                        onChange={handleImageUpload}
+                        className="input w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                        placeholder='Upload your profile picture'
+                    />
+
                 </div>
+               
+                
 
                 {/* Submit Button */}
                 <button
