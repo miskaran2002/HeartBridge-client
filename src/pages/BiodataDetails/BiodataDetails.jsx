@@ -34,23 +34,36 @@ const BiodataDetails = () => {
     });
 
     const handleAddToFav = async () => {
+        if (!user) {
+            Swal.fire('⚠️ Login Required', 'Please log in to add favourites.', 'warning');
+            return;
+        }
+
+        const favData = {
+            userEmail: user.email,
+            biodataId: biodata.biodataId,
+            name: biodata.name || 'Unknown',
+            occupation: biodata.occupation || 'N/A',
+            permanentDivision: biodata.permanentDivision || 'N/A'
+        };
+
         try {
-            const favData = {
-                userEmail: user.email,
-                biodataId: biodata.biodataId,
-                name: biodata.name,
-                occupation: biodata.occupation,
-                permanentDivision: biodata.permanentDivision
-            };
             const res = await axiosSecure.post('/favourites', favData);
-            if (res.data?.insertedId) {
-                Swal.fire('✅ Added!', 'Biodata added to favourites', 'success');
+            if (res.data.insertedId) {
+                Swal.fire('✅ Added!', 'Biodata added to favourites.', 'success');
+            } else {
+                Swal.fire('ℹ️ Info', 'This biodata is already in your favourites.', 'info');
             }
         } catch (err) {
-            console.error(err);
-            Swal.fire('Error', 'Could not add to favourites', 'error');
+            if (err.response?.status === 409) {
+                Swal.fire('ℹ️ Already Added', 'This biodata is already in your favourites.', 'info');
+            } else {
+                console.error(err);
+                Swal.fire('❌ Error', 'Failed to add to favourites.', 'error');
+            }
         }
     };
+
 
     const handleRequestContact = () => {
         navigate(`/checkout/${biodata.biodataId}`);

@@ -14,6 +14,7 @@ import BiodataDetails from "../pages/BiodataDetails/BiodataDetails";
 import Checkout from "../pages/CheckOutPage/Checkout";
 import MyContactRequest from "../pages/Dashboard/MyContactRequest/MyContactRequest";
 import ContactUs from "../pages/contactus/ContactUs";
+import MyFavourites from "../pages/Dashboard/MyFavouriteBiodata/MyFavourites";
 
 
 export const router = createBrowserRouter([
@@ -81,6 +82,10 @@ export const router = createBrowserRouter([
                 Component:MyContactRequest,
 
                
+            },
+            {
+                path:'myFavourites',
+                Component:MyFavourites,
             }
 
         ]
