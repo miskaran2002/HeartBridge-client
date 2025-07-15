@@ -19,8 +19,18 @@ const MyContactRequest = () => {
     });
 
     const handleDelete = async (id) => {
-        const confirm = window.confirm('Are you sure you want to delete this request?');
-        if (!confirm) return;
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: 'You will not be able to recover this request!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel',
+        });
+
+        if (!result.isConfirmed) return;
 
         try {
             const res = await axiosSecure.delete(`/contact-requests/${id}`);
@@ -33,6 +43,7 @@ const MyContactRequest = () => {
             Swal.fire('Error', 'Something went wrong', 'error');
         }
     };
+
 
     return (
         <div className="max-w-5xl mx-auto px-4 py-8">
