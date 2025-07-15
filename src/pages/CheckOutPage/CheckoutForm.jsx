@@ -3,12 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import Swal from 'sweetalert2';
+import useAuth from '../../hooks/useAuth';
 
 const CheckoutForm = ({ biodataId, email }) => {
     const stripe = useStripe();
     const elements = useElements();
     const { register, handleSubmit } = useForm();
     const axiosSecure = useAxiosSecure();
+    const {user}=useAuth()
 
     const [cardError, setCardError] = useState('');
     const [clientSecret, setClientSecret] = useState('');
@@ -58,7 +60,7 @@ const CheckoutForm = ({ biodataId, email }) => {
             // 4. Save contact request to database
             try {
                 const contactRequest = {
-                    name: " ",              // Optional — set if available
+                    name: user?.displayName || 'Unknown',            // Optional — set if available
                     email: data.email,
                     biodataId: data.biodataId,
                     mobile: '',            // Leave blank, will be filled after approval
