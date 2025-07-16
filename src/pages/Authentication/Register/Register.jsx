@@ -5,17 +5,30 @@ import Swal from 'sweetalert2';
 import axios from 'axios';
 import useAuth from '../../../hooks/useAuth';
 import SocialLogin from '../SocialLogin/SocialLogin';
+import useAxios from '../../../hooks/useAxios';
 
 const Register = () => {
     const { register, handleSubmit } = useForm();
     const { createUser, updateUserProfile } = useAuth();
     const [profilePic, setProfilePic] = useState('');
+    const axiosInstance= useAxios();
     const navigate = useNavigate();
 
     const onSubmit = async (data) => {
         try {
             const result = await createUser(data.email, data.password);
 
+          
+            const userInfo = {
+                name: data.name,                 // ✅ add this
+                photoURL: profilePic,              
+                email: data.email,
+                role:'user',//default role
+                created_at: new Date().toISOString(),
+                last_login: new Date().toISOString(),
+            }
+            const userRes= await axiosInstance.post('/users', userInfo);
+            console.log(userRes.data);
             const userProfile = {
                 displayName: data.name,
                 photoURL: profilePic
