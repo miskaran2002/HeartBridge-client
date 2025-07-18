@@ -1,12 +1,26 @@
 import React from 'react';
 import { Link, NavLink, Outlet } from 'react-router';
 
-import { FaHome, FaUser, FaCrown, FaUserShield } from 'react-icons/fa';
+import { FaHome, FaUser, FaCrown, FaUserShield, FaSignOutAlt } from 'react-icons/fa';
 import HeartBridge from '../pages/shared/heartbridgelogo/HeartBridge';
+import useAuth from '../hooks/useAuth';
+
 
 
 
 const DashboardLayout = () => {
+    const { user, logout } = useAuth();
+     const handleLogout = () => {
+            logout()
+                .then(() => {
+                    Swal.fire('Logged out!', 'You have successfully logged out.', 'success');
+                    navigate('/');
+                })
+                .catch(err => {
+                    console.error('Logout error:', err);
+                    Swal.fire('Error', 'Failed to logout.', 'error');
+                });
+        };
 
     return (
 
@@ -105,6 +119,15 @@ const DashboardLayout = () => {
                         <FaUserShield /> Admin Panel
                     </NavLink>
 
+
+                    <button
+                        onClick={handleLogout}
+                        className="flex items-center gap-2 px-3 py-2 rounded hover:bg-red-600"
+                    >
+                        <FaSignOutAlt /> Logout
+                    </button>
+
+
                 </aside>
 
                 {/* Drawer Toggle for Small Screens */}
@@ -170,6 +193,13 @@ const DashboardLayout = () => {
                     <NavLink to="/dashboard/adminPanel" className={({ isActive }) => `flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700 ${isActive ? 'bg-gray-700' : ''}`}>
                         <FaUserShield /> Admin Panel
                     </NavLink>
+                    <button
+                        onClick={handleLogout}
+                        className="flex items-center gap-2 px-3 py-2 rounded hover:bg-red-600"
+                    >
+                        <FaSignOutAlt /> Logout
+                    </button>
+
 
 
                     <label htmlFor="dashboard-drawer" className="mt-auto text-sm underline cursor-pointer">Close</label>
