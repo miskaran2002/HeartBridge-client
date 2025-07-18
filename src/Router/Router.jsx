@@ -15,6 +15,7 @@ import Checkout from "../pages/CheckOutPage/Checkout";
 import MyContactRequest from "../pages/Dashboard/MyContactRequest/MyContactRequest";
 import ContactUs from "../pages/contactus/ContactUs";
 import MyFavourites from "../pages/Dashboard/MyFavouriteBiodata/MyFavourites";
+import ApprovedPremium from "../pages/Dashboard/ApprovedPrimium/ApprovedPremium";
 
 
 export const router = createBrowserRouter([
@@ -86,6 +87,10 @@ export const router = createBrowserRouter([
             {
                 path:'myFavourites',
                 Component:MyFavourites,
+            },
+            {
+                path:'premiumBenefits',
+                Component:ApprovedPremium,
             }
 
         ]
