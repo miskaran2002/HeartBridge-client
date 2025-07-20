@@ -2,6 +2,7 @@ import React from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import Swal from 'sweetalert2';
+import { motion } from 'framer-motion';
 
 const AllContactRequests = () => {
     const axiosSecure = useAxiosSecure();
@@ -25,47 +26,78 @@ const AllContactRequests = () => {
         }
     });
 
-    if (isLoading) return <p>Loading...</p>;
+    const handleApproveClick = (id) => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you want to approve this contact request?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#16a34a',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, approve it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                approveRequest.mutate(id);
+            }
+        });
+    };
+
+    if (isLoading) return <p className="text-center py-10">Loading...</p>;
 
     return (
-        <div className="overflow-x-auto mt-5">
-            <h2 className="text-xl font-semibold mb-4">All Contact Requests</h2>
-            <table className="table table-zebra w-full">
+        <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="overflow-x-auto mt-10 max-w-6xl mx-auto p-4 bg-white shadow-md rounded-xl"
+        >
+            <h2 className="text-2xl font-semibold mb-6 text-center">All Contact Requests</h2>
+            <table className="table w-full text-sm">
                 <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Biodata ID</th>
-                        <th>Status</th>
-                        <th>Action</th>
+                    <tr className="bg-gray-100 text-left text-gray-700">
+                        <th className="py-3 px-4">#</th>
+                        <th className="py-3 px-4">Name</th>
+                        <th className="py-3 px-4">Email</th>
+                        <th className="py-3 px-4">Biodata ID</th>
+                        <th className="py-3 px-4">Status</th>
+                        <th className="py-3 px-4">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     {contactRequests.map((request, index) => (
-                        <tr key={request._id}>
-                            <td>{index + 1}</td>
-                            <td>{request.name}</td>
-                            <td>{request.email}</td>
-                            <td>{request.biodataId}</td>
-                            <td>{request.status}</td>
-                            <td>
+                        <tr key={request._id} className="border-b hover:bg-gray-50">
+                            <td className="py-3 px-4">{index + 1}</td>
+                            <td className="py-3 px-4">{request.name || 'Unknown'}</td>
+                            <td className="py-3 px-4">{request.email}</td>
+                            <td className="py-3 px-4">{request.biodataId}</td>
+                            <td className="py-3 px-4">
+                                {request.status === 'approved' ? (
+                                    <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-medium">
+                                        Approved
+                                    </span>
+                                ) : (
+                                    <span className="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-medium">
+                                        Pending
+                                    </span>
+                                )}
+                            </td>
+                            <td className="py-3 px-4">
                                 {request.status === 'pending' ? (
                                     <button
-                                        onClick={() => approveRequest.mutate(request._id)}
-                                        className="btn btn-sm btn-success"
+                                        onClick={() => handleApproveClick(request._id)}
+                                        className="text-sm font-medium text-white bg-green-600 hover:bg-green-700 px-3 py-1 rounded"
                                     >
                                         Approve
                                     </button>
                                 ) : (
-                                    <span className="text-green-600 font-bold">Approved</span>
+                                    <span className="text-green-600 font-semibold">✔ Approved</span>
                                 )}
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-        </div>
+        </motion.div>
     );
 };
 
