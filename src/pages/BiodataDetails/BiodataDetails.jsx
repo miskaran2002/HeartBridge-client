@@ -49,11 +49,16 @@ const BiodataDetails = () => {
             if (res.data.insertedId) {
                 Swal.fire('✅ Added!', 'Biodata added to favourites.', 'success');
             } else {
-                Swal.fire('ℹ️ Info', 'This biodata is already in your favourites.', 'info');
+                Swal.fire('ℹ️ Info', 'Action completed.', 'info');
             }
         } catch (err) {
-            Swal.fire('❌ Error', 'Failed to add to favourites.', 'error');
+            if (err.response?.status === 409) {
+                Swal.fire('ℹ️ Info', 'This biodata is already in your favourites.', 'info');
+            } else {
+                Swal.fire('❌ Error', 'Failed to add to favourites.', 'error');
+            }
         }
+
     };
 
     const handleRequestContact = () => {
