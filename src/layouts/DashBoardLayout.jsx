@@ -116,7 +116,7 @@ const DashboardLayout = () => {
                         to="/dashboard/adminPanel"
                         className={({ isActive }) => `flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700 ${isActive ? 'bg-gray-700' : ''}`}
                     >
-                        <FaUserShield /> Admin Panel
+                        <FaUserShield /> Make an Admin 
                     </NavLink>
 
 
@@ -191,7 +191,7 @@ const DashboardLayout = () => {
                     </NavLink>
 
                     <NavLink to="/dashboard/adminPanel" className={({ isActive }) => `flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700 ${isActive ? 'bg-gray-700' : ''}`}>
-                        <FaUserShield /> Admin Panel
+                        <FaUserShield /> Make an Admin 
                     </NavLink>
                     <button
                         onClick={handleLogout}
