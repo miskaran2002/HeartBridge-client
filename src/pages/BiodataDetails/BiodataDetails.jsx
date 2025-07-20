@@ -11,17 +11,14 @@ const BiodataDetails = () => {
     const axiosSecure = useAxiosSecure();
     const { user } = useAuth();
 
-    // Main biodata query
     const { data: biodata, isLoading } = useQuery({
         queryKey: ['biodata', biodataId],
         queryFn: async () => {
             const res = await axiosSecure.get(`/biodata/by-id/${biodataId}`);
-            console.log('🚀 Fetched biodata:', res.data);
             return res.data?.data;
         },
     });
 
-    // Similar biodatas query
     const { data: similarBiodatas = [] } = useQuery({
         queryKey: ['similar', biodata?.biodataType],
         enabled: !!biodata?.biodataType,
@@ -55,15 +52,9 @@ const BiodataDetails = () => {
                 Swal.fire('ℹ️ Info', 'This biodata is already in your favourites.', 'info');
             }
         } catch (err) {
-            if (err.response?.status === 409) {
-                Swal.fire('ℹ️ Already Added', 'This biodata is already in your favourites.', 'info');
-            } else {
-                console.error(err);
-                Swal.fire('❌ Error', 'Failed to add to favourites.', 'error');
-            }
+            Swal.fire('❌ Error', 'Failed to add to favourites.', 'error');
         }
     };
-
 
     const handleRequestContact = () => {
         navigate(`/checkout/${biodata.biodataId}`);
@@ -76,8 +67,13 @@ const BiodataDetails = () => {
 
     return (
         <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
-            <h2 className="text-2xl font-bold text-center">
+            <h2 className="text-2xl font-bold text-center flex flex-col items-center gap-1">
                 {biodata.name || 'Unknown Name'} (ID: {biodata.biodataId || 'N/A'})
+                {isPremium && (
+                    <span className="text-sm bg-green-100 text-green-800 px-2 py-1 rounded-full font-medium">
+                        ✅ Premium Member
+                    </span>
+                )}
             </h2>
 
             <img
@@ -104,12 +100,12 @@ const BiodataDetails = () => {
 
                 {isPremium ? (
                     <>
-                        <p><strong>Contact Email:</strong> {biodata.email}</p>
-                        <p><strong>Mobile Number:</strong> {biodata.mobile}</p>
+                        <p><strong>📧 Contact Email:</strong> {biodata.email || 'Not Provided'}</p>
+                        <p><strong>📱 Mobile Number:</strong> {biodata.mobile || 'Not Provided'}</p>
                     </>
                 ) : (
                     <p className="md:col-span-2 text-red-600 font-medium">
-                        Contact info is hidden. Become a premium member to view it.
+                        🚫 Contact info is hidden. Become a premium member to view it.
                     </p>
                 )}
             </div>
@@ -119,7 +115,7 @@ const BiodataDetails = () => {
                     onClick={handleAddToFav}
                     className="px-4 py-2 bg-[#4E1A3D] text-white rounded hover:bg-[#38102e]"
                 >
-                    Add to Favourites
+                    ❤️ Add to Favourites
                 </button>
 
                 {!isPremium && (
@@ -127,20 +123,19 @@ const BiodataDetails = () => {
                         onClick={handleRequestContact}
                         disabled={user.email === biodata.email}
                         className={`px-4 py-2 rounded text-white ${user.email === biodata.email
-                                ? 'bg-gray-400 cursor-not-allowed'
-                                : 'bg-blue-600 hover:bg-blue-700'
+                            ? 'bg-gray-400 cursor-not-allowed'
+                            : 'bg-blue-600 hover:bg-blue-700'
                             }`}
                         title={user.email === biodata.email ? 'You cannot request your own contact info' : ''}
                     >
-                        Request Contact Info
+                        📩 Request Contact Info
                     </button>
                 )}
-
             </div>
 
             {/* Similar Biodatas */}
             <div>
-                <h3 className="text-xl font-semibold mt-10 mb-4 text-center">Similar Biodatas</h3>
+                <h3 className="text-xl font-semibold mt-10 mb-4 text-center">🧍 Similar Biodatas</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {similarBiodatas.map((b) => (
                         <div key={b._id} className="border rounded-lg p-4 text-center shadow">
@@ -155,10 +150,10 @@ const BiodataDetails = () => {
                             <p>Age: {b.age}</p>
                             <p>Division: {b.permanentDivision}</p>
                             <button
-                                onClick={() => navigate(`/biodata/${b.biodataId}`)}
+                                onClick={() => navigate(`/biodata-details/${b.biodataId}`)}
                                 className="mt-2 text-blue-600 underline"
                             >
-                                View Profile
+                                🔍 View Profile
                             </button>
                         </div>
                     ))}
