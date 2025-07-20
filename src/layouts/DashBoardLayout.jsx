@@ -1,14 +1,17 @@
 import React from 'react';
 import { Link, NavLink, Outlet } from 'react-router';
 
-import { FaHome, FaUser, FaCrown, FaUserShield, FaSignOutAlt } from 'react-icons/fa';
+import { FaHome, FaUser, FaCrown, FaUserShield, FaSignOutAlt, FaCheckCircle } from 'react-icons/fa';
 import HeartBridge from '../pages/shared/heartbridgelogo/HeartBridge';
 import useAuth from '../hooks/useAuth';
+import useUserRole from '../hooks/useUserRole';
 
 
 
 
 const DashboardLayout = () => {
+    const { role, roleLoading }= useUserRole();
+    console.log(role);
     const { user, logout } = useAuth();
      const handleLogout = () => {
             logout()
@@ -101,23 +104,41 @@ const DashboardLayout = () => {
 
 
 
+                    {/* admins link */}
+                    {!roleLoading && role === 'admin' &&
+                        <>
+                            <NavLink
+                                to="/dashboard/premiumBenefits"
+                                className={({ isActive }) => `flex items-center gap-2 px-3 py-2 rounded hover:bg-yellow-600 ${isActive ? 'bg-yellow-600' : ''}`}
+                            >
+                                <FaCrown /> Premium Access
+                            </NavLink>
 
-                    <NavLink
-                        to="/dashboard/premiumBenefits"
-                        className={({ isActive }) => `flex items-center gap-2 px-3 py-2 rounded hover:bg-yellow-600 ${isActive ? 'bg-yellow-600' : ''}`}
-                    >
-                        <FaCrown /> Premium Access
-                    </NavLink>
 
 
 
+                            <NavLink
+                                to="/dashboard/adminPanel"
+                                className={({ isActive }) => `flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700 ${isActive ? 'bg-gray-700' : ''}`}
+                            >
+                                <FaUserShield /> Make an Admin
+                            </NavLink>
+                        <NavLink
+                            to="/dashboard/approvedContactRequests"
+                            className={({ isActive }) =>
+                                `flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700 ${isActive ? 'bg-gray-700' : ''
+                                }`
+                            }
+                        >
+                            <FaCheckCircle /> Approved Contact Requests
+                        </NavLink>
 
-                    <NavLink
-                        to="/dashboard/adminPanel"
-                        className={({ isActive }) => `flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700 ${isActive ? 'bg-gray-700' : ''}`}
-                    >
-                        <FaUserShield /> Make an Admin 
-                    </NavLink>
+
+                        </>
+
+                    }
+                   
+                    {/* admins link */}
 
 
                     <button
@@ -185,14 +206,40 @@ const DashboardLayout = () => {
 
 
 
+                    {/* admins link */}
+                {
+                        !roleLoading && role === 'admin' &&
+                    <>
+                            
+                            <NavLink to="/dashboard/premiumBenefits" className={({ isActive }) => `flex items-center gap-2 px-3 py-2 rounded hover:bg-yellow-600 ${isActive ? 'bg-yellow-600' : ''}`}>
+                                <FaCrown /> Premium Access
+                            </NavLink>
 
-                    <NavLink to="/dashboard/premiumBenefits" className={({ isActive }) => `flex items-center gap-2 px-3 py-2 rounded hover:bg-yellow-600 ${isActive ? 'bg-yellow-600' : ''}`}>
-                        <FaCrown /> Premium Access
-                    </NavLink>
+                            <NavLink to="/dashboard/adminPanel" className={({ isActive }) => `flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700 ${isActive ? 'bg-gray-700' : ''}`}>
+                                <FaUserShield /> Make an Admin
+                            </NavLink>
+                            <NavLink
+                                to="/dashboard/approvedContactRequests"
+                                className={({ isActive }) =>
+                                    `flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700 ${isActive ? 'bg-gray-700' : ''
+                                    }`
+                                }
+                            >
+                                <FaCheckCircle /> Approved Contact Requests
+                            </NavLink>
 
-                    <NavLink to="/dashboard/adminPanel" className={({ isActive }) => `flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700 ${isActive ? 'bg-gray-700' : ''}`}>
-                        <FaUserShield /> Make an Admin 
-                    </NavLink>
+                    </>
+                }
+
+                    {/* admins link */}
+
+
+
+
+
+
+
+
                     <button
                         onClick={handleLogout}
                         className="flex items-center gap-2 px-3 py-2 rounded hover:bg-red-600"

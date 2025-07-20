@@ -17,6 +17,7 @@ import ContactUs from "../pages/contactus/ContactUs";
 import MyFavourites from "../pages/Dashboard/MyFavouriteBiodata/MyFavourites";
 import ApprovedPremium from "../pages/Dashboard/ApprovedPrimium/ApprovedPremium";
 import MakeAdmin from "../pages/Dashboard/MakeAnAdmin/MakeAdmin";
+import ContactRequestTable from "../pages/Dashboard/ApprovedcontactRequest/ContactRequestTable";
 
 
 export const router = createBrowserRouter([
@@ -96,6 +97,10 @@ export const router = createBrowserRouter([
             {
                 path:'adminPanel',
                 Component:MakeAdmin
+            },
+            {
+                path:'approvedContactRequests',
+                Component:ContactRequestTable,
             }
 
         ]
