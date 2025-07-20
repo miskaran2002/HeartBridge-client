@@ -33,7 +33,7 @@ const BioDatas = () => {
                 (!filters.maxAge || b.age <= filters.maxAge);
             return matchType && matchDivision && matchAge;
         })
-        .slice(0, 20);
+       
 
     return (
         <motion.div
