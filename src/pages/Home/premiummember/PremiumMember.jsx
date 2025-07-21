@@ -26,7 +26,7 @@ const PremiumMembers = () => {
     return (
         <div className="my-10 max-w-7xl mx-auto px-4 bg-amber-50 rounded-2xl shadow-lg p-6">
             <div className="flex justify-between items-center mb-6">
-                <h2 className="text-3xl text-amber-950 font-bold">Premium Members</h2>
+                <h2 className="text-3xl text-center text-amber-950 font-bold"> Our Premium Members</h2>
                 <select
                     onChange={handleSortChange}
                     value={sortOrder}
