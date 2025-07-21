@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, NavLink, Outlet } from 'react-router';
 
-import { FaHome, FaUser, FaCrown, FaUserShield, FaSignOutAlt, FaCheckCircle, FaChartPie, FaRing } from 'react-icons/fa';
+import { FaHome, FaUser, FaCrown, FaUserShield, FaSignOutAlt, FaCheckCircle, FaChartPie, FaRing, FaHeart } from 'react-icons/fa';
 import HeartBridge from '../pages/shared/heartbridgelogo/HeartBridge';
 import useAuth from '../hooks/useAuth';
 import useUserRole from '../hooks/useUserRole';
@@ -158,6 +158,16 @@ const DashboardLayout = () => {
                             <FaCheckCircle /> Approved Contact Requests
                         </NavLink>
 
+                        <NavLink
+                            to="/dashboard/success-stories"
+                            className={({ isActive }) =>
+                                `flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700 ${isActive ? 'bg-gray-700' : ''
+                                }`
+                            }
+                        >
+                            <FaHeart /> Success Stories
+                        </NavLink>
+
 
                         </>
 
@@ -223,6 +233,16 @@ const DashboardLayout = () => {
                     >
                         <FaUser /> My Favourites Biodata
                     </NavLink>
+                    <NavLink
+                        to="/dashboard/got-married"
+                        className={({ isActive }) =>
+                            `flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700 ${isActive ? 'bg-gray-700' : ''
+                            }`
+                        }
+                    >
+                        <FaRing /> Got Married
+                    </NavLink>
+
 
 
 
@@ -264,6 +284,15 @@ const DashboardLayout = () => {
                                 }
                             >
                                 <FaCheckCircle /> Approved Contact Requests
+                            </NavLink>
+                            <NavLink
+                                to="/dashboard/success-stories"
+                                className={({ isActive }) =>
+                                    `flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700 ${isActive ? 'bg-gray-700' : ''
+                                    }`
+                                }
+                            >
+                                <FaHeart /> Success Stories
                             </NavLink>
 
                     </>
