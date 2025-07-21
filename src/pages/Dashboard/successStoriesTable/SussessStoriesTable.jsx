@@ -42,7 +42,7 @@ const SuccessStoriesTable = () => {
                                 <td className="py-3 px-4 border-b border-gray-300">
                                     <button
                                         onClick={() => setSelectedStory(story)}
-                                        className="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md transition"
+                                        className="mt-3 px-4 py-2 rounded bg-[#4E1A3D] text-white hover:bg-[#3b102e] transition"
                                     >
                                         View Story
                                     </button>
