@@ -171,7 +171,7 @@ const BiodataDetails = () => {
                             <p>Age: {b.age}</p>
                             <p>Division: {b.permanentDivision}</p>
                             <button
-                                onClick={() => navigate(`/biodata-details/${b.biodataId}`)}
+                                onClick={() => navigate(`/biodata/${b.biodataId}`)}
                                 className="mt-2 text-blue-600 underline"
                             >
                                 🔍 View Profile
