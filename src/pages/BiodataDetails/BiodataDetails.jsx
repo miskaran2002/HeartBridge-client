@@ -11,7 +11,8 @@ const BiodataDetails = () => {
     const axiosSecure = useAxiosSecure();
     const { user } = useAuth();
 
-    const { data: biodata, isLoading } = useQuery({
+    // Load single biodata
+    const { data: biodata, isLoading: isBiodataLoading } = useQuery({
         queryKey: ['biodata', biodataId],
         queryFn: async () => {
             const res = await axiosSecure.get(`/biodata/by-id/${biodataId}`);
@@ -19,6 +20,7 @@ const BiodataDetails = () => {
         },
     });
 
+    // Load similar biodata (same gender/type, excluding this one)
     const { data: similarBiodatas = [] } = useQuery({
         queryKey: ['similar', biodata?.biodataType],
         enabled: !!biodata?.biodataType,
@@ -29,6 +31,19 @@ const BiodataDetails = () => {
                 .slice(0, 3);
         },
     });
+
+    // Fetch premium status for the logged-in user from backend API
+    const { data: premiumData, isLoading: isPremiumLoading } = useQuery({
+        queryKey: ['user-premium-status', user?.email],
+        enabled: !!user?.email,
+        queryFn: async () => {
+            const res = await axiosSecure.get(`/api/users/is-premium?email=${encodeURIComponent(user.email)}`);
+            return res.data;
+        },
+    });
+
+    // Determine if the user is premium based on backend response
+    const isPremium = premiumData?.isPremium === true;
 
     const handleAddToFav = async () => {
         if (!user) {
@@ -58,20 +73,23 @@ const BiodataDetails = () => {
                 Swal.fire('❌ Error', 'Failed to add to favourites.', 'error');
             }
         }
-
     };
 
     const handleRequestContact = () => {
         navigate(`/checkout/${biodata.biodataId}`);
     };
 
-    if (isLoading) return <p className="text-center py-10">Loading biodata...</p>;
-    if (!biodata) return <p className="text-center py-10 text-red-600">No biodata found!</p>;
+    if (isBiodataLoading || isPremiumLoading) {
+        return <p className="text-center py-10">Loading biodata...</p>;
+    }
 
-    const isPremium = user?.isPremium || false;
+    if (!biodata) {
+        return <p className="text-center py-10 text-red-600">No biodata found!</p>;
+    }
 
     return (
         <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
+            {/* Header */}
             <h2 className="text-2xl font-bold text-center flex flex-col items-center gap-1">
                 {biodata.name || 'Unknown Name'} (ID: {biodata.biodataId || 'N/A'})
                 {isPremium && (
@@ -81,12 +99,14 @@ const BiodataDetails = () => {
                 )}
             </h2>
 
+            {/* Image */}
             <img
                 src={biodata.image || 'https://i.ibb.co/2n7Vj1J/default-avatar.png'}
                 alt={biodata.name}
                 className="w-40 h-40 object-cover rounded-full mx-auto border-2 border-[#4E1A3D]"
             />
 
+            {/* Details */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
                 <p><strong>Biodata Type:</strong> {biodata.biodataType}</p>
                 <p><strong>Date of Birth:</strong> {biodata.dob}</p>
@@ -115,6 +135,7 @@ const BiodataDetails = () => {
                 )}
             </div>
 
+            {/* Action Buttons */}
             <div className="flex gap-4 justify-center mt-6">
                 <button
                     onClick={handleAddToFav}
@@ -123,15 +144,10 @@ const BiodataDetails = () => {
                     ❤️ Add to Favourites
                 </button>
 
-                {!isPremium && (
+                {!isPremium && user?.email !== biodata.email && (
                     <button
                         onClick={handleRequestContact}
-                        disabled={user.email === biodata.email}
-                        className={`px-4 py-2 rounded text-white ${user.email === biodata.email
-                            ? 'bg-gray-400 cursor-not-allowed'
-                            : 'bg-blue-600 hover:bg-blue-700'
-                            }`}
-                        title={user.email === biodata.email ? 'You cannot request your own contact info' : ''}
+                        className="px-4 py-2 rounded text-white bg-blue-600 hover:bg-blue-700"
                     >
                         📩 Request Contact Info
                     </button>
