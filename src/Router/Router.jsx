@@ -18,6 +18,8 @@ import MyFavourites from "../pages/Dashboard/MyFavouriteBiodata/MyFavourites";
 import ApprovedPremium from "../pages/Dashboard/ApprovedPrimium/ApprovedPremium";
 import MakeAdmin from "../pages/Dashboard/MakeAnAdmin/MakeAdmin";
 import ContactRequestTable from "../pages/Dashboard/ApprovedcontactRequest/ContactRequestTable";
+import BiodataInsightsPieChart from "../pages/Dashboard/AdminDashboard/BiodataInsightsPiechart";
+import GotMarried from "../pages/Dashboard/married/GotMarried";
 
 
 export const router = createBrowserRouter([
@@ -101,6 +103,16 @@ export const router = createBrowserRouter([
             {
                 path:'approvedContactRequests',
                 Component:ContactRequestTable,
+            },
+            {
+                path:'biodataInsights',
+                Component:BiodataInsightsPieChart,
+
+            },
+            {
+                path:'got-married',
+                Component:GotMarried,
+
             }
 
         ]

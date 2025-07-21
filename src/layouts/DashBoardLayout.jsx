@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, NavLink, Outlet } from 'react-router';
 
-import { FaHome, FaUser, FaCrown, FaUserShield, FaSignOutAlt, FaCheckCircle } from 'react-icons/fa';
+import { FaHome, FaUser, FaCrown, FaUserShield, FaSignOutAlt, FaCheckCircle, FaChartPie, FaRing } from 'react-icons/fa';
 import HeartBridge from '../pages/shared/heartbridgelogo/HeartBridge';
 import useAuth from '../hooks/useAuth';
 import useUserRole from '../hooks/useUserRole';
@@ -82,6 +82,16 @@ const DashboardLayout = () => {
                         <FaUser /> My Favourites Biodata
                     </NavLink>
 
+                    <NavLink
+                        to="/dashboard/got-married"
+                        className={({ isActive }) =>
+                            `flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700 ${isActive ? 'bg-gray-700' : ''
+                            }`
+                        }
+                    >
+                        <FaRing /> Got Married
+                    </NavLink>
+
 
 
 
@@ -107,6 +117,21 @@ const DashboardLayout = () => {
                     {/* admins link */}
                     {!roleLoading && role === 'admin' &&
                         <>
+
+
+                        <NavLink
+                            to="/dashboard/biodataInsights"
+                            className={({ isActive }) =>
+                                `flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700 ${isActive ? 'bg-gray-700' : ''
+                                }`
+                            }
+                        >
+                            <FaChartPie /> Admin Dashboard
+                        </NavLink>
+
+
+
+
                             <NavLink
                                 to="/dashboard/premiumBenefits"
                                 className={({ isActive }) => `flex items-center gap-2 px-3 py-2 rounded hover:bg-yellow-600 ${isActive ? 'bg-yellow-600' : ''}`}
@@ -210,6 +235,19 @@ const DashboardLayout = () => {
                 {
                         !roleLoading && role === 'admin' &&
                     <>
+
+
+
+                            <NavLink
+                                to="/dashboard/biodataInsights"
+                                className={({ isActive }) =>
+                                    `flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700 ${isActive ? 'bg-gray-700' : ''
+                                    }`
+                                }
+                            >
+                                <FaChartPie /> Admin Dashboard
+                            </NavLink>
+
                             
                             <NavLink to="/dashboard/premiumBenefits" className={({ isActive }) => `flex items-center gap-2 px-3 py-2 rounded hover:bg-yellow-600 ${isActive ? 'bg-yellow-600' : ''}`}>
                                 <FaCrown /> Premium Access
