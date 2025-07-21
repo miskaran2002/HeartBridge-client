@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../../../hooks/useAxiosSecure';
 import CountUp from 'react-countup';
-import { FaUsers, FaMale, FaFemale } from 'react-icons/fa';
+import { FaUsers, FaMale, FaFemale, FaHeart } from 'react-icons/fa';
 
 const SuccessCounters = () => {
     const axiosSecure = useAxiosSecure();
@@ -35,6 +35,12 @@ const SuccessCounters = () => {
             label: 'Female Biodatas',
             value: data.totalFemale,
             icon: <FaFemale className="text-5xl text-[#DB2777] mx-auto mb-3" />
+        },
+        {
+            id: 4,
+            label: 'Total Married',
+            value: data.totalMarried,  // added this field
+            icon: <FaHeart className="text-5xl text-[#E11D48] mx-auto mb-3" />
         }
     ];
 
