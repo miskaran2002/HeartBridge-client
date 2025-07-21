@@ -25,13 +25,14 @@ const GotMarried = () => {
         }
 
         try {
-            const response = await axiosSecure.post('/success-stories', {
+            const response = await axiosSecure.post('/api/success-stories', {
                 selfBiodataId,
                 partnerBiodataId,
                 coupleImage,
                 reviewText,
                 userEmail: user.email,
             });
+
 
             if (response.data.message) {
                 Swal.fire('🎉 Success', response.data.message, 'success');
