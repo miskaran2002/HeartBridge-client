@@ -50,7 +50,7 @@ const SuccessCounters = () => {
                 Our Success Counters
             </h2>
 
-            <div className="flex flex-col md:flex-row justify-center gap-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 justify-items-center">
                 {counters.map(({ id, label, value, icon }) => (
                     <div
                         key={id}
@@ -68,6 +68,7 @@ const SuccessCounters = () => {
                 ))}
             </div>
         </section>
+
     );
 };
 
