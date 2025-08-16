@@ -8,7 +8,7 @@ const CardSection = ({ title, children }) => (
         transition={{ duration: 0.5, ease: "easeOut" }}
         className=" dark:bg-gray-800 p-6 mb-8 rounded-xl shadow-md"
     >
-        <h2 className="text-2xl font-semibold text-orange-600 mb-4">{title}</h2>
+        <h2 className="text-2xl font-semibold text-orange-800 mb-4">{title}</h2>
         <div className="text-base text-gray-800 dark:text-gray-200">{children}</div>
     </motion.div>
 );
@@ -28,7 +28,7 @@ const AboutUs = () => {
             transition={{ duration: 0.8, ease: 'easeOut' }}
             className="max-w-5xl mx-auto px-4 py-12 font-sans text-gray-900 dark:text-gray-200"
         >
-            <h2 className="text-4xl font-bold text-center mb-8 text-orange-600">
+            <h2 className="text-4xl font-bold text-center mb-8 text-orange-500">
                 About HeartBridge
             </h2>
 
