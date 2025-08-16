@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { motion } from "framer-motion";
+import { Crown, MapPin, Briefcase, UserCircle2 } from "lucide-react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const PremiumMembers = () => {
@@ -10,9 +11,10 @@ const PremiumMembers = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        axiosSecure.get(`/premium-members?sort=${sortOrder}`)
-            .then(res => setMembers(res.data))
-            .catch(err => console.error(err));
+        axiosSecure
+            .get(`/premium-members?sort=${sortOrder}`)
+            .then((res) => setMembers(res.data))
+            .catch((err) => console.error(err));
     }, [sortOrder, axiosSecure]);
 
     const handleSortChange = (e) => {
@@ -24,44 +26,65 @@ const PremiumMembers = () => {
     };
 
     return (
-        <div className="my-10 max-w-7xl mx-auto px-4 bg-amber-50 rounded-2xl shadow-lg p-6">
-            <div className="flex justify-between items-center mb-6">
-                <h2 className="text-3xl text-center text-amber-950 font-bold"> Our Premium Members</h2>
+        <div className="my-10 max-w-7xl mx-auto px-4 bg-base-100 dark:bg-neutral rounded-2xl shadow-lg p-6">
+            {/* Header Section */}
+            <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-primary flex justify-center items-center gap-2 mb-4">
+                    <Crown className="text-yellow-500 w-7 h-7" />
+                    Our Premium Members
+                </h2>
                 <select
                     onChange={handleSortChange}
                     value={sortOrder}
-                    className="select select-bordered"
+                    className="select select-bordered select-sm"
                 >
                     <option value="asc">Sort by Age: Ascending</option>
                     <option value="desc">Sort by Age: Descending</option>
                 </select>
             </div>
 
+            {/* Members Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                {members.map(member => (
+                {members.map((member) => (
                     <motion.div
                         key={member._id}
-                        className="border p-4 rounded-2xl shadow-md bg-white hover:shadow-xl transition-shadow duration-300"
+                        className="relative border p-4 rounded-2xl shadow-md bg-white dark:bg-base-200 hover:shadow-xl transition-all duration-300"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                     >
+                        {/* Premium Badge */}
+                        <span className="absolute top-3 right-3 badge badge-warning gap-1">
+                            <Crown className="w-3 h-3" /> Premium
+                        </span>
+
+                        {/* Profile Image */}
                         <img
                             src={member.image}
                             alt={member.name}
                             className="w-full h-48 object-cover rounded-md mb-3"
                         />
-                        <h3 className="text-xl font-semibold">{member.name}</h3>
-                        <p className="text-sm">Biodata ID: {member.biodataId}</p>
-                        <p className="text-sm">Type: {member.biodataType}</p>
-                        <p className="text-sm">Division: {member.permanentDivision}</p>
-                        <p className="text-sm">Age: {member.age}</p>
-                        <p className="text-sm mb-3">Occupation: {member.occupation}</p>
 
+                        {/* Info */}
+                        <h3 className="text-lg font-semibold text-primary flex items-center gap-1">
+                            <UserCircle2 className="w-5 h-5 text-secondary" />
+                            {member.name}
+                        </h3>
+                        <p className="text-sm opacity-70">Biodata ID: {member.biodataId}</p>
+                        <p className="text-sm">Type: {member.biodataType}</p>
+                        <p className="text-sm flex items-center gap-1">
+                            <MapPin className="w-4 h-4 text-secondary" /> {member.permanentDivision}
+                        </p>
+                        <p className="text-sm">Age: {member.age}</p>
+                        <p className="text-sm mb-3 flex items-center gap-1">
+                            <Briefcase className="w-4 h-4 text-secondary" /> {member.occupation}
+                        </p>
+
+                        {/* Button */}
                         <motion.button
                             onClick={() => handleViewProfile(member.biodataId)}
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
-                            className="mt-3 px-4 py-2 rounded bg-[#4E1A3D] text-white hover:bg-[#3b102e] transition"
+                            className="w-full mt-3 px-4 py-2 rounded-lg mt-3 px-4 py-2 rounded bg-[#4E1A3D] text-white hover:bg-[#3b102e] transition"
                         >
                             View Profile
                         </motion.button>
