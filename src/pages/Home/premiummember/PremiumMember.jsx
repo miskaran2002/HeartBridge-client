@@ -58,11 +58,15 @@ const PremiumMembers = () => {
                         </span>
 
                         {/* Profile Image */}
-                        <img
-                            src={member.image}
-                            alt={member.name}
-                            className="w-full h-48 object-cover rounded-md mb-3"
-                        />
+                        {/* Profile Image */}
+                        <div className="w-full aspect-square overflow-hidden rounded-md mb-3">
+                            <img
+                                src={member.image}
+                                alt={member.name}
+                                className="w-full h-full object-cover"
+                            />
+                        </div>
+
 
                         {/* Info */}
                         <h3 className="text-lg font-semibold text-primary flex items-center gap-1">
