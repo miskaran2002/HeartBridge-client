@@ -59,7 +59,7 @@ const PremiumMembers = () => {
 
                         {/* Profile Image */}
                         {/* Profile Image */}
-                        <div className="w-full aspect-square overflow-hidden rounded-md mb-3">
+                        <div className="w-full aspect-video overflow-hidden rounded-md mb-3">
                             <img
                                 src={member.image}
                                 alt={member.name}
@@ -88,7 +88,7 @@ const PremiumMembers = () => {
                             onClick={() => handleViewProfile(member.biodataId)}
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
-                            className="w-full mt-3 px-4 py-2 rounded-lg mt-3 px-4 py-2 rounded bg-[#4E1A3D] text-white hover:bg-[#3b102e] transition"
+                            className="w-full mt-3 px-4 py-2 rounded-lg  bg-[#4E1A3D] text-white hover:bg-[#3b102e] transition"
                         >
                             View Profile
                         </motion.button>

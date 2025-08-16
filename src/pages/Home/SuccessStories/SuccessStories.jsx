@@ -20,7 +20,7 @@ const SuccessStories = () => {
     if (isError) return <div>Error loading success stories: {error.message}</div>;
 
     return (
-        <section className="success-stories-section max-w-6xl mx-auto  p-6">
+        <section className="success-stories-section max-w-7xl mx-auto  p-6">
             <h2 className="text-3xl font-bold mb-10 text-center">🎉Marriage Success Stories</h2>
             <div className=" w-full grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
                 {stories.map((story, index) => (
