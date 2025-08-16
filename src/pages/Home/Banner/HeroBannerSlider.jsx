@@ -58,18 +58,16 @@ const HeroBannerSlider = () => {
                             />
 
                             {/* Overlay text */}
-                            <div className="absolute inset-0  bg-opacity-40 flex flex-col justify-center items-center text-center px-4">
-                                <div className="bg-gray-50 bg-opacity-80 rounded-lg px-4 py-3 max-w-[90%] md:max-w-[70%]">
-                                    <h2 className="text-xl md:text-4xl font-bold text-secondary drop-shadow mb-2">
+                            <div className="absolute inset-0 bg-black/40 dark:bg-[#0a0025]/70 flex flex-col justify-center items-center text-center px-4">
+                                <div className="bg-white/80 dark:bg-[#1a1035]/70 rounded-lg px-4 py-3 max-w-[90%] md:max-w-[70%] shadow-lg">
+                                    <h2 className="text-xl md:text-4xl font-bold text-gray-900 dark:text-white drop-shadow mb-2">
                                         {banner.title}
                                     </h2>
-                                    <p className="text-sm md:text-lg text-primary">
+                                    <p className="text-sm md:text-lg text-gray-700 dark:text-gray-300">
                                         {banner.subtitle}
                                     </p>
                                 </div>
                             </div>
-
-
                         </div>
                     </SwiperSlide>
                 ))}
