@@ -21,6 +21,7 @@ import ContactRequestTable from "../pages/Dashboard/ApprovedcontactRequest/Conta
 import BiodataInsightsPieChart from "../pages/Dashboard/AdminDashboard/BiodataInsightsPiechart";
 import GotMarried from "../pages/Dashboard/married/GotMarried";
 import SuccessStoriesTable from "../pages/Dashboard/successStoriesTable/SussessStoriesTable";
+import ErrorPage from "../pages/ErrorPage/Errorpage";
 
 
 export const router = createBrowserRouter([
@@ -123,6 +124,10 @@ export const router = createBrowserRouter([
 
         ]
 
+    },
+    {
+        path: "/*",
+        element: <ErrorPage></ErrorPage>
     }
    
     
