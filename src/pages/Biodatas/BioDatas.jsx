@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router'; // fixed import react-router-dom (not react-router)
 import useAxiosSecure from '../../hooks/useAxiosSecure';
+import LoadingSpinner from '../shared/Navbar/Loading/LoadingSpinner';
 
 const divisions = ['Dhaka', 'Chattagra', 'Rangpur', 'Barisal', 'Khulna', 'Mymensingh', 'Sylhet'];
 const types = ['Male', 'Female'];
@@ -156,7 +157,7 @@ const BioDatas = () => {
                 </div>
 
                 {isLoading ? (
-                    <p className="text-center text-gray-600">Loading biodatas...</p>
+                    <p className="text-center text-gray-600"><LoadingSpinner></LoadingSpinner></p>
                 ) : (
                     <>
                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
