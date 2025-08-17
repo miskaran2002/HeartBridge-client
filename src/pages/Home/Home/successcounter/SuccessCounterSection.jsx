@@ -28,47 +28,51 @@ const SuccessCounters = () => {
             id: 2,
             label: 'Male Biodatas',
             value: data.totalMale,
-            icon: <FaMale className="text-5xl text-[#1E40AF] mx-auto mb-3" />
+            icon: <FaMale className="text-5xl text-blue-700 mx-auto mb-3" />
         },
         {
             id: 3,
             label: 'Female Biodatas',
             value: data.totalFemale,
-            icon: <FaFemale className="text-5xl text-[#DB2777] mx-auto mb-3" />
+            icon: <FaFemale className="text-5xl text-pink-600 mx-auto mb-3" />
         },
         {
             id: 4,
             label: 'Total Married',
-            value: data.totalMarried,  // added this field
-            icon: <FaHeart className="text-5xl text-[#E11D48] mx-auto mb-3" />
+            value: data.totalMarried,
+            icon: <FaHeart className="text-5xl text-rose-600 mx-auto mb-3" />
         }
     ];
 
     return (
-        <section className="success-counters py-10 bg-[#f9f7f9] text-center rounded-lg max-w-5xl mx-auto shadow-lg">
-            <h2 className="text-3xl font-extrabold mb-10 text-[#4E1A3D] tracking-wide">
+        <section className="py-12 px-6  dark:from-neutral dark:via-base-200 dark:to-neutral rounded-2xl max-w-7xl mx-auto shadow-lg">
+            {/* Section Title */}
+            <h2 className="text-3xl font-extrabold mb-10 text-center  dark:text-pink-200 tracking-wide">
                 Our Success Counters
             </h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 justify-items-center">
+            {/* Counters Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 justify-items-center">
                 {counters.map(({ id, label, value, icon }) => (
                     <div
                         key={id}
-                        className="counter bg-white shadow-md rounded-xl p-8 flex flex-col items-center w-48"
+                        className="counter bg-white dark:bg-[#1F0F0F] shadow-md hover:shadow-xl 
+                           transition-all duration-300 rounded-2xl p-10 flex flex-col items-center 
+                                 w-68 h-64 transform hover:-translate-y-1"
                     >
                         {icon}
                         <CountUp
                             end={value}
-                            duration={2}
+                            duration={2.5}
                             separator=","
-                            className="text-5xl font-bold text-[#4E1A3D]"
+                            className="text-6xl font-extrabold text-[#4E1A3D] dark:text-pink-400"
                         />
-                        <p className="mt-3 text-lg font-semibold text-gray-600">{label}</p>
+                        <p className="mt-4 text-xl font-semibold text-gray-600 dark:text-gray-300">{label}</p>
                     </div>
+
                 ))}
             </div>
         </section>
-
     );
 };
 
