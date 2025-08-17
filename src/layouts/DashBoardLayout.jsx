@@ -5,6 +5,7 @@ import { FaHome, FaUser, FaCrown, FaUserShield, FaSignOutAlt, FaCheckCircle, FaC
 import HeartBridge from '../pages/shared/heartbridgelogo/HeartBridge';
 import useAuth from '../hooks/useAuth';
 import useUserRole from '../hooks/useUserRole';
+import ThemeController from '../pages/Theme/ThemeController';
 
 
 
@@ -34,6 +35,7 @@ const DashboardLayout = () => {
                 {/* Sidebar */}
                 <aside className="w-64 bg-gray-800 text-white hidden lg:flex flex-col p-4 space-y-4">
                     <HeartBridge></HeartBridge>
+                    <ThemeController></ThemeController>
 
                     <NavLink
                         to="/"
@@ -197,6 +199,7 @@ const DashboardLayout = () => {
                 <input type="checkbox" id="dashboard-drawer" className="hidden peer" />
                 <aside className="peer-checked:flex hidden fixed top-0 left-0 h-full w-64 bg-gray-800 text-white flex-col p-4 space-y-4 z-40 lg:hidden">
                     <div>Heart Bridge Dashboard</div>
+                    <ThemeController></ThemeController>
 
                     <NavLink to="/" className={({ isActive }) => `flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-700 ${isActive ? 'bg-gray-700' : ''}`}>
                         <FaHome /> Home
