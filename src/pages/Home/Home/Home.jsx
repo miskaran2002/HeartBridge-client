@@ -8,6 +8,7 @@ import SuccessStories from '../SuccessStories/SuccessStories';
 import CallToAction from './Calltoaction/CallToAction';
 import OurServices from './OurServices/OurServices';
 import HeartBridgeFeatures from './Features/Features';
+import CustomerTestimonials from './Testimonial/CustomerTestimonials';
 
 const Home = () => {
     return (
@@ -21,6 +22,7 @@ const Home = () => {
             <SuccessCounterSection></SuccessCounterSection>
             <HeartBridgeFeatures></HeartBridgeFeatures>
             <SuccessStories></SuccessStories>
+            <CustomerTestimonials></CustomerTestimonials>
             <CallToAction></CallToAction>
 
            
