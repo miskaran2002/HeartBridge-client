@@ -320,7 +320,7 @@ const DashboardLayout = () => {
                 </aside>
 
                 {/* Main content */}
-                <main className="flex-1 bg-gray-50 p-4">
+                <main className="flex-1 p-4">
                     <Outlet />
                 </main>
             </div>
