@@ -2,22 +2,33 @@ import React from 'react';
 import { Outlet, Link } from 'react-router';
 import { motion } from 'framer-motion';
 import HeartBridge from '../pages/shared/heartbridgelogo/HeartBridge';
+import ThemeController from '../pages/Theme/ThemeController';
 
 const AuthLayout = () => {
     return (
         <div>
             <div className="min-h-screen flex flex-col md:flex-row items-center justify-center  overflow-hidden relative">
-                {/* Logo - absolute positioned */}
-                <Link
-                    to="/"
-                    className="absolute top-4 left-4 z-50"
-                    aria-label="Go to homepage"
-                >
-                    <div className="w-16 h-16 md:w-20 md:h-20 bg-transparent rounded-md overflow-hidden">
-                        <HeartBridge />
-                    </div>
-                </Link>
+                <div className='flex flex-row'>
+                    <Link
+                        to="/"
+                        className="absolute top-4 left-4 z-50"
+                        aria-label="Go to homepage"
+                    >
+                        <div className="w-16 h-16 md:w-20 md:h-20 bg-transparent rounded-md overflow-hidden">
+                            <HeartBridge />
+                        </div>
+                        <ThemeController></ThemeController>
 
+                    </Link>
+                  
+
+
+                </div>
+                {/* Logo - absolute positioned */}
+
+              
+
+                
 
                 {/* Left side: Form content */}
                 <motion.div
