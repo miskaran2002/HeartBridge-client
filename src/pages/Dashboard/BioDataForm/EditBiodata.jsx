@@ -74,7 +74,7 @@ const EditBioData = () => {
         <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)} className="relative z-50">
             <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
             <div className="fixed inset-0 flex items-center justify-center p-4 overflow-y-auto">
-                <Dialog.Panel className="bg-white p-6 rounded max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                <Dialog.Panel className=" p-6 rounded max-w-4xl w-full max-h-[90vh] overflow-y-auto">
                     <Dialog.Title className="text-2xl font-bold text-center mb-6">
                         {existingData ? 'Update Your Biodata' : 'Create Your Biodata'}
                     </Dialog.Title>

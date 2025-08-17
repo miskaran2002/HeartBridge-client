@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import useAuth from '../../../hooks/useAuth';
+import LoadingSpinner from '../../shared/Navbar/Loading/LoadingSpinner';
 
 const ViewBioData = () => {
     const { user } = useAuth();
@@ -51,7 +52,7 @@ const ViewBioData = () => {
     };
 
     if (isLoading) {
-        return <p className="text-center mt-10 text-blue-600">Loading your biodata...</p>;
+        return <p className="text-center mt-10 text-blue-600"><LoadingSpinner></LoadingSpinner></p>;
     }
 
     if (!biodata) {
@@ -63,7 +64,7 @@ const ViewBioData = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="max-w-4xl mx-auto p-6 bg-white shadow rounded-lg"
+            className="max-w-4xl mx-auto p-6  shadow rounded-lg"
         >
             <h2 className="text-2xl font-bold mb-6 text-center">Your Biodata</h2>
 
