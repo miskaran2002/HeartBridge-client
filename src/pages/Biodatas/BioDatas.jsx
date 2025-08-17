@@ -128,7 +128,7 @@ const BioDatas = () => {
             {/* Biodata Cards Section */}
             <section className="lg:w-3/4 w-full space-y-6">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-4">
-                    <h2 className="text-xl font-bold text-[#4E1A3D] border-b pb-2">
+                    <h2 className="text-xl font-bold  border-b pb-2">
                         Total Biodatas: {filteredSortedData.length}
                     </h2>
 

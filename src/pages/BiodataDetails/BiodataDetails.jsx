@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import Swal from 'sweetalert2';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import useAuth from '../../hooks/useAuth';
+import LoadingSpinner from '../shared/Navbar/Loading/LoadingSpinner';
 
 const BiodataDetails = () => {
     const { biodataId } = useParams();
@@ -80,7 +81,7 @@ const BiodataDetails = () => {
     };
 
     if (isBiodataLoading || isPremiumLoading) {
-        return <p className="text-center py-10">Loading biodata...</p>;
+        return <p className="text-center py-10"><LoadingSpinner></LoadingSpinner></p>;
     }
 
     if (!biodata) {
