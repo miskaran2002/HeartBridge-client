@@ -2,6 +2,7 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import LoadingSpinner from '../../shared/Navbar/Loading/LoadingSpinner';
 
 const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff7f50', '#00C49F'];
 
@@ -16,7 +17,7 @@ const OverviewPage = () => {
         }
     });
 
-    if (isLoading) return <p className="text-center text-gray-600 mt-20">Loading...</p>;
+    if (isLoading) return <p className="text-center text-gray-600 mt-20"><LoadingSpinner></LoadingSpinner></p>;
     if (isError || !data?.success) return <p className="text-center text-red-600 mt-20">Failed to load data.</p>;
 
     const pieData = [
@@ -28,8 +29,8 @@ const OverviewPage = () => {
     ];
 
     return (
-        <div className="p-6 bg-gray-100 dark:bg-gray-900 min-h-screen transition-colors duration-300">
-            <h1 className="text-3xl font-bold mb-8 text-gray-900 dark:text-gray-100 text-center">
+        <div className="p-6 dark:bg-gray-900 min-h-screen transition-colors duration-300">
+            <h1 className="text-3xl font-bold mb-8 text-center">
                 Dashboard Overview
             </h1>
 

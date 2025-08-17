@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { motion, AnimatePresence } from 'framer-motion';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import LoadingSpinner from '../../shared/Navbar/Loading/LoadingSpinner';
 
 
 const SuccessStoriesTable = () => {
@@ -18,7 +19,7 @@ const SuccessStoriesTable = () => {
         staleTime: 5 * 60 * 1000,
     });
 
-    if (isLoading) return <div>Loading success stories...</div>;
+    if (isLoading) return <div><LoadingSpinner></LoadingSpinner></div>;
     if (isError) return <div>Error loading success stories: {error.message}</div>;
 
     return (

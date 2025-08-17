@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import Swal from 'sweetalert2';
 import { motion } from 'framer-motion';
+import LoadingSpinner from '../../shared/Navbar/Loading/LoadingSpinner';
 
 const AllContactRequests = () => {
     const axiosSecure = useAxiosSecure();
@@ -42,14 +43,14 @@ const AllContactRequests = () => {
         });
     };
 
-    if (isLoading) return <p className="text-center py-10">Loading...</p>;
+    if (isLoading) return <p className="text-center py-10"><LoadingSpinner></LoadingSpinner></p>;
 
     return (
         <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="overflow-x-auto mt-10 max-w-6xl mx-auto p-4 bg-white shadow-md rounded-xl"
+            className="overflow-x-auto mt-10 max-w-6xl mx-auto p-4  shadow-md rounded-xl"
         >
             <h2 className="text-2xl font-semibold mb-6 text-center">All Contact Requests</h2>
             <table className="table w-full text-sm">
