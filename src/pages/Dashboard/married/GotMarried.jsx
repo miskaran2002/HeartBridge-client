@@ -49,7 +49,7 @@ const GotMarried = () => {
     };
 
     return (
-        <div className="max-w-lg mx-auto p-6 bg-white rounded shadow-md">
+        <div className="max-w-lg mx-auto p-6  rounded shadow-md">
             <h2 className="text-2xl font-bold mb-6 text-center">Got Married? Share Your Success Story</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
