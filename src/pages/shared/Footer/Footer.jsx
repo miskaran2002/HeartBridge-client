@@ -59,8 +59,8 @@ const Footer = () => {
                 <div>
                     <h3 className="text-xl font-semibold text-red-600 mb-4">Contact Info</h3>
                     <ul className="space-y-2 text-sm">
-                        <li>Email: support@heartbridge.com</li>
-                        <li>Phone: +880-1234-567890</li>
+                        <li>Email: raihanuddin.cse8.bu@gmail.com</li>
+                        <li>WhattsApp: +8801608822137</li>
                         <li>Address: Barisal, Bangladesh</li>
                     </ul>
                 </div>

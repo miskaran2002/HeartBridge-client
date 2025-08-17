@@ -6,7 +6,7 @@ import HeartBridge from '../pages/shared/heartbridgelogo/HeartBridge';
 const AuthLayout = () => {
     return (
         <div>
-            <div className="min-h-screen flex flex-col md:flex-row items-center justify-center bg-white overflow-hidden relative">
+            <div className="min-h-screen flex flex-col md:flex-row items-center justify-center  overflow-hidden relative">
                 {/* Logo - absolute positioned */}
                 <Link
                     to="/"
